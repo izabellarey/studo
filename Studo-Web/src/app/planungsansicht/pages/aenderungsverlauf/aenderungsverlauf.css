@@ -1,0 +1,228 @@
+h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--ion-text-color);
+}
+ 
+p {
+    color: #676d71
+}
+ 
+h2 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+ 
+ion-button {
+    --background: #52796F;
+    --background-hover: #2f3e46;
+    --background-activated: #52796f;
+    --color: #ffffff;
+    text-transform: none;
+}
+ 
+ion-button ion-icon {
+  margin-right: 6px;
+}
+ 
+.bereich-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin: 32px 0 12px;
+}
+ 
+.zaehler {
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: #fde8e8;
+  color: #b42318;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+ 
+.zaehler.leer {
+  background: #cad2c5;
+  color: #2f3e46;
+}
+ 
+.badge {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+ 
+.badge.ausfall       { background: #fde8e8; color: #b42318; }
+.badge.vertretung    { background: #fef3c7; color: #92400e; }
+.badge.raumaenderung { background: #fdf0d5; color: #9a5b00; }
+.badge.zusatzstunde  { background: #e0ecff; color: #1d4ed8; }
+ 
+.offen-liste {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+ 
+.offen-karte {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid #cad2c5;
+  border-left: 5px solid #f59e0b;
+  border-radius: 12px;
+}
+ 
+.offen-karte.ausfall      { border-left-color: #b42318; }
+.offen-karte.zusatzstunde { border-left-color: #1d4ed8; }
+ 
+.offen-titel {
+  margin: 8px 0 0;
+  font-weight: 600;
+  color: var(--ion-text-color);
+}
+ 
+.offen-beschreibung {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+}
+ 
+.offen-aktion {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  flex-shrink: 0;
+}
+ 
+.offen-aktion ion-button {
+  margin: 0;
+}
+ 
+.zeit {
+  color: #676d71;
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.filter-aktion-leiste {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0;
+}
+ 
+.suche {
+  flex: 1 1 280px;
+  max-width: 400px;
+  padding: 0;
+  --border-radius: 20px;
+  --box-shadow: none;
+  --background: #f0f2ef;
+}
+ 
+.filter-chips {
+  display: flex;
+  gap: 8px;
+}
+ 
+.filter-chip {
+  --border-radius: 20px;
+  --background:#cad2c5;
+  --color: #2f3e46;
+  text-transform: none;
+}
+ 
+.filter-chip.aktiv {
+    --background: #52796F;
+    --background-hover: #2f3e46;
+    --background-activated: #52796F;
+    --color: #ffffff;
+}
+
+.verlauf-tabelle {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+ 
+.verlauf-tabelle th {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  background: #52796F;
+  color: #ffffff
+}
+ 
+.verlauf-tabelle td {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #cad2c5;
+}
+ 
+.tag-zeile td {
+  background: #cad2c5;
+  color: #2f3e46;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+ 
+.einheit {
+  font-weight: 600;
+  color: #52796F;
+}
+
+.hinweis {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 24px 16px;
+  text-align: center;
+}
+ 
+.hinweis p {
+  margin: 0;
+}
+ 
+.hinweis.fehler p {
+  color: #b42318;
+}
+ 
+.ende {
+  margin-top: 16px;
+  text-align: center;
+  font-size: 0.85rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .offen-karte {
+    background: #1e1e1e;
+    border-color: #2f3e46;
+  }
+ 
+  .tag-zeile td {
+    background: #2f3e46;
+    color: #ffffff;
+  }
+ 
+  .verlauf-tabelle td {
+    border-bottom-color: #2f3e46;
+  }
+ 
+  .suche {
+    --background: #2a2a2a;
+    --color: white;
+  }
+}
+ 

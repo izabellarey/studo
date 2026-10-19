@@ -1,0 +1,55 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/planungsansicht/raeume"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ raum()?.bezeichnung }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <!-- Raumname und weitere Infos oben anzeigen lassen -->
+  <h1>{{ raum()?.bezeichnung }}</h1>
+  <p class="raeume2_p">
+    Raumart: {{ raum()?.art }} · Kapazität: {{ raum()?.kapazitaet }} Personen
+  </p>
+
+  <p class="raeume2_p" *ngIf="geladen() && belegung().length === 0">
+    Für diesen Raum ist aktuell kein Unterricht eingeplant.
+  </p>
+
+  <!-- Stundenplan Raster -->
+  <table class="belegungs-tabelle" *ngIf="stunden().length > 0">
+    <thead>
+      <tr>
+        <th class="stunde-spalte">Std.</th>
+        <th *ngFor="let tag of wochentage">{{ tag }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let stunde of stunden()">
+        <td class="stunde-spalte">
+          {{ stunde }}
+          <small *ngIf="zeiten().get(stunde) as zeit">{{ zeit }}</small>
+        </td>
+        <td *ngFor="let tag of wochentage">
+          <ng-container *ngIf="getEintrag(stunde, tag) as eintrag; else frei">
+            <div class="belegt-zelle"
+                 [class.vertretung]="eintrag.status === 'vertretung'"
+                 [class.ausfall]="eintrag.status === 'ausfall'">
+              <strong>{{ eintrag.bezeichnung }}</strong>
+              <span>{{ eintrag.person }} · {{ eintrag.klasse }}</span>
+              <span class="status-hinweis" *ngIf="eintrag.status === 'vertretung'">Vertretung</span>
+              <span class="status-hinweis" *ngIf="eintrag.status === 'ausfall'">Entfällt</span>
+            </div>
+          </ng-container>
+          <ng-template #frei>
+            <div class="frei-zelle">— Frei —</div>
+          </ng-template>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</ion-content>

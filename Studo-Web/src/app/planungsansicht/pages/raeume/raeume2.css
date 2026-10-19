@@ -1,0 +1,103 @@
+h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.raeume2_p {
+  color: var(--ion-color-step-600, #808080);
+  margin-top: 4px;
+  margin-bottom: 24px;
+}
+
+/* Raumplan im gleichen Raster-Layout wie der Schüler-Stundenplan */
+.belegungs-tabelle {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed; /* alle Tagesspalten gleich breit */
+}
+
+.belegungs-tabelle th,
+.belegungs-tabelle td {
+  border: 1px solid #ddd;
+  padding: 6px;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 0.85rem;
+}
+
+/* Stundenspalte fest */
+.stunde-spalte {
+  width: 110px;
+}
+
+td.stunde-spalte {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.stunde-spalte small {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: normal;
+  color: #888;
+}
+
+/* Gleiche Größen für Felder */
+.frei-zelle,
+.belegt-zelle {
+  box-sizing: border-box;
+  height: 72px;
+  width: 100%;
+  padding: 6px;
+  border-radius: 6px;
+  border: 2px solid transparent; /* gleiche Rahmenbreite wie bei Markierung */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.frei-zelle {
+  color: #aaa;
+}
+
+/* Belegte Stunde (gleiches Grün wie die Räume-Cards) */
+.belegt-zelle {
+  background-color: #52796F;
+  color: #ffffff;
+}
+
+.belegt-zelle strong {
+  display: block;
+}
+
+.belegt-zelle span {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+/* Vertretung (gelb umrandet) */
+.belegt-zelle.vertretung {
+  border-color: #F4C430;
+}
+
+/* Ausfall (rot umrandet, Fachname durchgestrichen) */
+.belegt-zelle.ausfall {
+  border-color: #D64545;
+}
+
+.belegt-zelle.ausfall strong {
+  text-decoration: line-through;
+}
+
+.status-hinweis {
+  font-size: 0.75rem;
+  font-weight: bold;
+}

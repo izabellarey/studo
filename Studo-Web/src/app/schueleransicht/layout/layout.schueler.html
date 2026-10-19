@@ -1,0 +1,37 @@
+<ion-split-pane contentId="main-content">
+  <ion-menu contentId="main-content" type="overlay">
+    <ion-content>
+      <div class="sidebar">
+        <div class="logo">
+          <ion-img
+            src="assets/STudo_Logo_LightText_H100.png"
+            alt="Studo Logo"
+          ></ion-img>
+        </div>
+
+        <a routerLink="/schueleransicht/stundenplan" routerLinkActive="active">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span>Stundenplan</span>
+        </a>
+
+        <a routerLink="/schueleransicht/aenderungen" routerLinkActive="active">
+          <ion-icon name="swap-horizontal-outline"></ion-icon>
+          <span>Änderungen</span>
+        </a>
+
+        <a (click)="logout()">
+          <ion-icon name="log-out-outline"></ion-icon>
+          <span>Log out</span>
+        </a>
+      </div>
+    </ion-content>
+  </ion-menu>
+
+  <div id="main-content" class="main-content">
+    <div class="Topnav"></div>
+
+    <div class="container">
+      <ion-router-outlet></ion-router-outlet>
+    </div>
+  </div>
+</ion-split-pane>

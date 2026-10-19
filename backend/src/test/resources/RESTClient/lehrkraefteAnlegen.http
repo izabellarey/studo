@@ -1,0 +1,526 @@
+
+### Lehrkraft anlegen
+POST http://localhost:8080/api/lehrkraefte
+Content-Type: application/json
+
+{
+  "name": "Meyer",
+  "vorname": "Petra",
+  "passwort": "test123",
+  "kuerzel": "MEY",
+  "anstellungsverhaeltnis": "VOLLZEIT",
+  "deputatsstunden": 25,
+  "fachIds": [1]
+}
+
+### Account (Planer) anlegen
+POST http://localhost:8080/api/accounts
+Content-Type: application/json
+
+{
+  "name": "Weber",
+  "vorname": "Klaus",
+  "passwort": "test123"
+}
+
+### Account Bearbeiten
+PUT http://localhost:8080/api/accounts/1552
+Content-Type: application/json
+
+{
+  "name": "Weber",
+  "vorname": "Klaus",
+  "aktiv": true
+}
+
+### Account Deaktivieren
+PUT http://localhost:8080/api/accounts/1/deaktivieren
+
+### Schueler anlegen
+POST http://localhost:8080/api/schueler
+Content-Type: application/json
+
+{
+  "name": "Schmidt",
+  "vorname": "Lena",
+  "passwort": "test123",
+  "eintrittsdatum": "2026-08-01",
+  "klassenId": 1
+}
+
+### Schueler Bearbeiten
+PUT http://localhost:8080/api/schueler/1
+Content-Type: application/json
+
+{
+  "name": "Schmidt",
+  "vorname": "Lisa",
+  "aktiv": true,
+  "austrittsdatum": null,
+  "klassenId": 1
+}
+
+### Schueler Deaktivieren
+PUT http://localhost:8080/api/schueler/1/deaktivieren
+
+### Stundenplan wählen
+PUT http://localhost:8080/api/stundenplaene/waehlen/1
+
+###
+
+### Stundenplan abwählen
+PUT http://localhost:8080/api/stundenplaene/abwaehlen/1
+
+###
+
+### Alle finalen Stundenpläne veröffentlichen
+PUT http://localhost:8080/api/stundenplaene/veroeffentlichen?generationId=1
+
+###
+
+### Ab Hier StammdatenService
+
+### Alles auf einmal laden (Übersicht der Stammdaten-Seite)
+GET http://localhost:8080/api/stammdaten
+
+###
+
+### Schulprofil anzeigen
+GET http://localhost:8080/api/stammdaten/schulprofil
+
+###
+
+### Schulprofil speichern
+PUT http://localhost:8080/api/stammdaten/schulprofil
+Content-Type: application/json
+
+{
+  "name": "Gymnasium Musterstadt",
+  "bundesland": "Schleswig-Holstein",
+  "schulform": "Gymnasium"
+}
+
+###
+
+### Stundenraster anzeigen
+GET http://localhost:8080/api/stammdaten/stundenraster
+
+###
+
+### Stundenraster speichern (mit Pausen)
+PUT http://localhost:8080/api/stammdaten/stundenraster
+Content-Type: application/json
+
+{
+  "schulbeginn": "08:00:00",
+  "stundendauer": 45,
+  "stundenProTag": 6,
+  "pausen": [
+    { "nachStunde": 2, "dauerMinuten": 20 },
+    { "nachStunde": 4, "dauerMinuten": 10 }
+  ]
+}
+
+###
+
+### Alle Pausenregeln anzeigen
+GET http://localhost:8080/api/stammdaten/pausenregeln
+
+###
+
+### Pausenregel anlegen
+POST http://localhost:8080/api/stammdaten/pausenregeln
+Content-Type: application/json
+
+{
+  "jahrgangsstufeId": 1,
+  "mindestpauseNachStunden": 2,
+  "mindestdauerMinuten": 15,
+  "aktiv": true
+}
+
+###
+
+### Pausenregel bearbeiten
+PUT http://localhost:8080/api/stammdaten/pausenregeln/1
+Content-Type: application/json
+
+{
+  "jahrgangsstufeId": 1,
+  "mindestpauseNachStunden": 3,
+  "mindestdauerMinuten": 20,
+  "aktiv": true
+}
+
+###
+
+### Pausenregel löschen
+DELETE http://localhost:8080/api/stammdaten/pausenregeln/1
+
+###
+
+### Alle Maximalbelastungen anzeigen
+GET http://localhost:8080/api/stammdaten/maximalbelastungen
+
+###
+
+### Maximalbelastung anlegen
+POST http://localhost:8080/api/stammdaten/maximalbelastungen
+Content-Type: application/json
+
+{
+  "jahrgangsstufeId": 1,
+  "maxStundenTag": 6,
+  "maxStundenWoche": 30,
+  "aktiv": true
+}
+
+###
+
+### Maximalbelastung bearbeiten
+PUT http://localhost:8080/api/stammdaten/maximalbelastungen/1
+Content-Type: application/json
+
+{
+  "jahrgangsstufeId": 1,
+  "maxStundenTag": 7,
+  "maxStundenWoche": 32,
+  "aktiv": true
+}
+
+###
+
+### Maximalbelastung löschen
+DELETE http://localhost:8080/api/stammdaten/maximalbelastungen/1
+
+###
+
+### Alle Pflichtfächer mit Stufen anzeigen
+GET http://localhost:8080/api/stammdaten/pflichtfaecher
+
+###
+
+### Neue Stufenvorgabe zu Fach 1 anlegen (mit Blockregel)
+POST http://localhost:8080/api/stammdaten/pflichtfaecher/1/stufen
+Content-Type: application/json
+
+{
+  "jahrgangsstufeId": 1,
+  "stundenanzahl": 4,
+  "doppelstundenBevorzugt": true,
+  "aktiv": true
+}
+
+###
+
+### Stufenvorgabe bearbeiten (Blockregel entfernen)
+PUT http://localhost:8080/api/stammdaten/pflichtfaecher/1/stufen/1
+Content-Type: application/json
+
+{
+  "jahrgangsstufeId": 1,
+  "stundenanzahl": 5,
+  "doppelstundenBevorzugt": false,
+  "aktiv": true
+}
+
+###
+
+### Stufenvorgabe löschen
+DELETE http://localhost:8080/api/stammdaten/pflichtfaecher/1/stufen/1
+
+###
+
+### Vertretungspriorität anzeigen
+GET http://localhost:8080/api/stammdaten/vertretungsprioritaet
+
+###
+
+### Vertretungspriorität neu ordnen (Reihenfolge = neue Prio)
+PUT http://localhost:8080/api/stammdaten/vertretungsprioritaet
+Content-Type: application/json
+
+[
+  { "jahrgangsstufeId": 2 },
+  { "jahrgangsstufeId": 1 },
+  { "jahrgangsstufeId": 3 }
+]
+
+###
+
+PUT http://localhost:8080/api/stundenplaene/unterrichtsstunde/2/aenderung
+Content-Type: application/json
+
+{
+  "lehrkraftId": 100
+  //"raumId": 3
+}
+
+###
+
+
+PUT http://localhost:8080/api/lehrkraefte/1
+Content-Type: application/json
+
+{
+  "name": "Mueller",
+  "vorname": "Anke",
+  "aktiv": true,
+  "anstellungsverhaeltnis": "VOLLZEIT",
+  "deputatsstunden": 25,
+  "fachIds": [1],
+  "lerngruppeId": 5,
+  "verfuegbarkeiten": []
+}
+
+###
+
+PUT http://localhost:8080/api/lehrkraefte/1/deaktivieren
+
+###
+
+POST http://localhost:8080/api/stammdaten/pausenregeln
+
+###
+
+PUT http://localhost:8080/api/stammdaten/pflichtfaecher/2/stufen/2
+Content-Type: application/json
+
+{
+  "jahrgangsstufeId": 2,
+  "stundenanzahl": 999,
+  "doppelstundenBevorzugt": true,
+  "aktiv": true
+}
+
+###
+
+POST http://localhost:8080/api/stammdaten/pflichtfaecher/5/stufen
+Content-Type: application/json
+
+{
+  "jahrgangsstufeId": 1,
+  "stundenanzahl": 3,
+  "doppelstundenBevorzugt": true,
+  "aktiv": true
+}
+
+###
+
+PUT http://localhost:8080/api/stammdaten/pflichtfaecher/5/stufen/1552
+Content-Type: application/json
+
+{
+  "jahrgangsstufeId": 1,
+  "stundenanzahl": 3,
+  "doppelstundenBevorzugt": false,
+  "aktiv": true
+}
+
+###
+
+POST http://localhost:8080/api/stammdaten/pflichtfaecher/1/stufen
+Content-Type: application/json
+
+{
+  "jahrgangsstufeId": 2,
+  "stundenanzahl": 3,
+  "doppelstundenBevorzugt": false,
+  "aktiv": true
+}
+
+###
+
+### Erste Generierung starten
+POST http://localhost:8080/api/stundenplaene/generieren
+
+###
+
+### Sofort nochmal versuchen - sollte fehlschlagen
+POST http://localhost:8080/api/stundenplaene/generieren
+
+
+###
+
+POST http://localhost:8080/api/stammdaten/faecher
+Content-Type: application/json
+
+{
+  "kuerzel": "TEST99",
+  "name": "Testfach"
+}
+
+###
+
+POST http://localhost:8080/api/stammdaten/pflichtfaecher/9999/stufen
+Content-Type: application/json
+
+{
+  "jahrgangsstufeId": 1,
+  "stundenanzahl": 2,
+  "doppelstundenBevorzugt": false,
+  "aktiv": true
+}
+
+###
+
+POST http://localhost:8080/api/stundenplaene/generieren
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmcmF1a2UtbGluZG5lciIsInJvbGUiOiJQTEFOVU5HIiwiaWF0IjoxNzkwMjM1NDQ4LCJleHAiOjE3OTAyNzE0NDh9.o6oHkZ0g8C2xbIEfK-NHSfORYCS-EbCtA1xiKvzWJig6SB9QHYordPm5L03LE14O
+
+###
+
+PUT http://localhost:8080/api/stundenplaene/veroeffentlichen?generationId=1552&variante=1
+
+###
+
+PUT http://localhost:8080/api/lehrkraefte/1
+Content-Type: application/json
+
+{
+  "name": "Meyer",
+  "vorname": "Petra",
+  "aktiv": true,
+  "anstellungsverhaeltnis": "VOLLZEIT",
+  "deputatsstunden": 25,
+  "fachIds": [1],
+  "praeferenzIds": [1,2,3],
+  "lerngruppeId": null,
+  "verfuegbarkeiten": []
+}
+
+###
+
+POST http://localhost:8080/api/lehrkraefte
+Content-Type: application/json
+
+{
+  "name": "Schmidt",
+  "vorname": "Jonas",
+  "passwort": "start1234",
+  "anstellungsverhaeltnis": "TEILZEIT",
+  "deputatsstunden": 15,
+  "fachIds": [1],
+  "praeferenzIds": [1,2,3]
+}
+
+###
+
+POST http://localhost:8080/api/lehrkraefte
+Content-Type: application/json
+
+{
+  "name": "Test",
+  "vorname": "Ohne",
+  "passwort": "start1234",
+  "anstellungsverhaeltnis": "VOLLZEIT",
+  "deputatsstunden": 25,
+  "fachIds": [1],
+  "praeferenzIds": []
+}
+
+###
+
+PUT http://localhost:8080/api/lehrkraefte/3152
+Content-Type: application/json
+
+{
+  "name": "Test",
+  "vorname": "Vier",
+  "aktiv": true,
+  "anstellungsverhaeltnis": "VOLLZEIT",
+  "deputatsstunden": 25,
+  "fachIds": [1],
+  "praeferenzIds": [4, 5, 6, 1],
+  "lerngruppeId": null,
+  "verfuegbarkeiten": []
+}
+
+###
+
+POST http://localhost:8080/api/stammdaten/faecher
+Content-Type: application/json
+
+{
+  "kuerzel": "TEST999",
+  "name": "Testfach",
+  "benoetigterRaumtyp": "KLASSENRAUM"
+}
+
+
+###
+
+PUT http://localhost:8080/api/lehrkraefte/1
+Content-Type: application/json
+
+{
+  "name": "Meyer",
+  "vorname": "Petra",
+  "aktiv": true,
+  "anstellungsverhaeltnis": "VOLLZEIT",
+  "deputatsstunden": 25,
+  "fachIds": [1],
+  "verfuegbarkeiten": [
+    {
+      "zeitslotId": 1,
+      "wochentag": "MONTAG",
+      "typ": "GESPERRT",
+      "startdatum": "2026-09-01",
+      "enddatum": "2027-01-31"
+    }
+  ]
+}
+
+###
+
+PUT http://localhost:8080/api/stundenplaene/veroeffentlichen?generationId=1&variante=1
+
+###
+
+PUT http://localhost:8080/api/lehrkraefte/1
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmcmF1a2UtbGluZG5lciIsInJvbGUiOiJQTEFOVU5HIiwiaWF0IjoxNzkwMjM1NDQ4LCJleHAiOjE3OTAyNzE0NDh9.o6oHkZ0g8C2xbIEfK-NHSfORYCS-EbCtA1xiKvzWJig6SB9QHYordPm5L03LE14O
+
+{
+  "name": "Mueller",
+  "vorname": "Anke",
+  "aktiv": true,
+  "anstellungsverhaeltnis": "VOLLZEIT",
+  "deputatsstunden": 6,
+  "fachIds": [1]
+}
+
+
+#########
+
+
+POST http://localhost:8080/api/auth/login
+Content-Type: application/json
+
+{
+  "benutzername": "frauke-lindner",
+  "passwort": "start1234"
+}
+
+###
+
+PUT http://localhost:8080/api/stundenplaene/veroeffentlichen?generationId=5000&variante=99
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmcmF1a2UtbGluZG5lciIsInJvbGUiOiJQTEFOVU5HIiwiaWF0IjoxNzkwMjM1NDQ4LCJleHAiOjE3OTAyNzE0NDh9.o6oHkZ0g8C2xbIEfK-NHSfORYCS-EbCtA1xiKvzWJig6SB9QHYordPm5L03LE14O
+
+
+###
+
+
+PUT http://localhost:8080/api/lehrkraefte/5
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmcmF1a2UtbGluZG5lciIsInJvbGUiOiJQTEFOVU5HIiwiaWF0IjoxNzkwMjM1NDQ4LCJleHAiOjE3OTAyNzE0NDh9.o6oHkZ0g8C2xbIEfK-NHSfORYCS-EbCtA1xiKvzWJig6SB9QHYordPm5L03LE14O
+
+{
+  "name": "Meyer", "vorname": "Petra", "aktiv": true,
+  "anstellungsverhaeltnis": "VOLLZEIT", "deputatsstunden": 25,
+  "fachIds": [1], "lerngruppeId": 2
+}
+
+###
+
+GET http://localhost:8080/api/lehrkraefte
+Authorization: Bearer eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJmcmF1a2UtbGluZG5lciIsInJvbGUiOiJQTEFOVU5HIiwiaWF0IjoxNzkwMjM5ODUxLCJleHAiOjE3OTAyNzU4NTF9.pGmmceM5L0vrOH0cBIA3hVj4EPqc3cEnDOfcrr5MjjK9uZu0gO1T_6CuydWeYxjM

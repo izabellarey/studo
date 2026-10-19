@@ -1,0 +1,23 @@
+Security Features sind jetzt auf dem master-Branch.
+Bei allen Methoden, die accountbezogen sind, wo der Rückgabewert also vom eingeloggten Account abhängt ist der Authentication Parameter hinzugefügt worden.
+Wenn ihr die Methoden testen wollt, geht das leider nicht mehr einfach über den Browser, deshalb hier ne kleine Anleitung:
+1. Der Nutzer muss mit Benutzername und gehashtem Passwort in der Datenbank stehen.
+    Dazu gibt es die Klasse PasswordHashGenerator, da einfach die main Methode laufen lassen, das Passwort in Klartext eingeben
+    und dann den zurückgegebenen Hash kopieren und mit UPDATE oder direkt mit INSERT in die Datenbank einpflegen.
+2. In einem Terminal normal bootRun starten
+3. In einem zweiten Terminal folgenden Befehl eingeben (Arbeitsverzeichnis egal):
+    curl -X POST http://localhost:8080/api/auth/login   -H "Content-Type: application/json"   -d '{"benutzername":"BENUTZERNAME_DES ACCOUNTS","passwort":"KLARTEXTPASSWORT"}'
+    Ihr bekommt dann ein Token zurück, das müsst ihr kopieren und dann
+4. den angepassten curl Befehl, je nach Endpunkt den ihr aufrufen wollt mit dem token versehen und losschicken
+    curl http://localhost:8080/api/schueleransicht/stundenplan   -H "Authorization: Bearer EUER_TOKEN"
+    dort dann die URL anpassen auf die zu testende Methode
+5. ihr bekommt die JSON die ihr normal bei Methodentests im Browser angezeigt bekommt dann im Terminal als ANtwort
+6. wenn ihr nen Fehler zurückbekommt, schaut mal im ersten Terminal, wo bootRun läuft, was der Fehler ist.
+    Debugging dann mit KI wahrscheinlich, die Fehlermeldungen sind bodenlos lang, aber hier ne Einordnung:
+    Code 500 -> irgendwas mit der Implementierung stimmt nicht
+    Code 401 -> irgendwas mit dem Token, vielleicht falsch kopiert, ein " zu viel oder so oder falsches Passwort/Nutzername eingegeben
+    Code 403 -> keine Berechtigung, sollte aktuell noch nicht auftreten, da bisher jede Rolle auf jeden Endpunkt zugreifen kann, das wird erst später scharfgeschaltet
+    Code 404 -> Endpunkt nicht gefunden, falsche URL
+
+
+Sonst könnt ihr auch mich fragen, wenn was nicht stimmt.

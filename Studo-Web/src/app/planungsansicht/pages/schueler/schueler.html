@@ -1,0 +1,139 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Schüler</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h1>Schülerverwaltung</h1>
+  <p>Schülerzugänge, Klassenbelegung und Login-Daten steuern</p>
+  
+
+<!------------------------------------ Filterleiste ---------------------------------------->
+
+
+<div class="filter-aktion-leiste">
+  <div class="filter-chips">
+    <ion-button class="filter-chip" [class.aktiv]="aktiverFilter() === 'alle'"  (click)="filterSetzen('alle')">Alle</ion-button>
+    <ion-button class="filter-chip" [class.aktiv]="aktiverFilter() === '5-6'"  (click)="filterSetzen('5-6')">Klasse 5-6</ion-button>
+    <ion-button class="filter-chip" [class.aktiv]="aktiverFilter() === '7-8'"  (click)="filterSetzen('7-8')">Klasse 7-8</ion-button>
+    <ion-button class="filter-chip" [class.aktiv]="aktiverFilter() === '9-10'" (click)="filterSetzen('9-10')">Klasse 9-10</ion-button>
+    <ion-button class="filter-chip" [class.aktiv]="aktiverFilter() === 'deaktiviert'" (click)="filterSetzen('deaktiviert')">Deaktiviert</ion-button>
+  </div>
+
+  <ion-button class="anlegen" (click)="openPopup()">
+    <ion-icon name="add-outline"></ion-icon>
+    Schüler anlegen
+  </ion-button>
+</div>
+
+
+  <!----------------------------- Popover: Schüler anlegen/ bearbeiten ------------------------->
+ 
+ 
+  <div class="popup" [class.active]="popupIsOpen">
+    <div class="popup-content">
+      <h3> {{ bearbeitenId ? 'Schüler bearbeiten' : 'Stammdaten des Schülers anlegen' }}</h3>
+
+      <button class="close" (click)="openPopup()">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+
+      <label>Vorname</label>
+      <ion-input [(ngModel)]="formData.vorname" fill="outline" placeholder="Vorname eingeben"></ion-input>
+
+      <label>Name</label>
+      <ion-input [(ngModel)]="formData.name" fill="outline" placeholder="Nachnamen eingeben"></ion-input>
+
+      <label>Klasse</label>
+      <ion-item>
+        <ion-select interface="popover" placeholder="Klasse auswählen" [(ngModel)]="formData.klassenId">
+          @for (k of klassenListe(); track k.id) {
+            <ion-select-option [value]="k.id">{{k.bezeichnung}}</ion-select-option>
+          }
+        </ion-select>
+      </ion-item>
+
+      @if (!bearbeitenId) {
+      <label>Passwort</label>
+      <ion-input type="password" [(ngModel)]="formData.passwort" fill="outline" placeholder="Passwort eingeben"></ion-input> 
+
+      <label>Eintrittsdatum</label>
+      <ion-input type="date" [(ngModel)]="formData.eintrittsdatum" fill="outline"></ion-input>
+      }
+
+      <button class="speichern" (click)="speichern()">
+         {{ bearbeitenId ? 'Änderungen speichern' : 'Schüler anlegen' }} 
+      </button>
+    </div>
+  </div>
+  
+
+  <!---------------------------- Popover: Passwort zurücksetzen --------------------------->
+  
+  
+  <div class="popup" [class.active]="passwortPopupOffen">
+    <div class="popup-content">
+      <h3>Neues Passwort setzen</h3>
+
+      <button class="close" (click)="passwortPopupOffen = false">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+
+      <label>Neues Passworte</label>
+      <ion-input type="password" [(ngModel)]="neuesPasswortWert" fill="outline" placeholder="Neues Passwort eingeben"></ion-input>
+
+      <button class="speichern" (click)="passwortZuruecksetzenBestaetigen()">Passwort setzen</button>
+    </div>
+  </div>
+
+
+    <!----------------------------------- Tabelle Schüler ------------------------------------>
+  
+  
+    <table class="schueler-tabelle">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Klasse/Kurs</th>
+        <th>Klassenraum</th>
+        <th>Benutzername</th>
+        <th>Aktion</th>
+      </tr>
+    </thead>
+
+
+    <!--------------------------- Daten aus Datenbank ziehen -------------------------------->
+    
+    
+    <tbody>
+      @for (s of gefilterteListe(); track s.id) {
+        <tr>
+          <td>{{ s.vorname }} {{ s.name }}</td>
+          <td>{{ s.klasse }}</td>
+          <td>{{ s.klassenraum }}</td>
+          <td>{{ s.benutzername }}</td>
+
+
+          <!--------------------- Buttons Bearbeiten und Löschen von Schülern---------------------->
+         
+         
+          <td class="buttons">
+            <ion-button class="bearbeiten" fill="clear" color="dark" (click)="bearbeitenStarten(s)" title="Bearbeiten">
+              <ion-icon name="create-outline"></ion-icon>
+            </ion-button>
+            
+            <ion-button class="status" fill="clear" color="dark" (click)="statusUmschalten(s)" [title]="s.aktiv ? 'Deaktivieren' : 'Wieder aktivieren'">
+              <ion-icon [name]="s.aktiv ? 'close-circle-outline' : 'checkmark-circle-outline'"></ion-icon>
+            </ion-button>
+
+            <ion-button class="passwort" fill="clear" color="dark" (click)="passwortZuruecksetzenStarten(s)" title="Passwort setzen">
+              <ion-icon name="key-outline"></ion-icon>
+            </ion-button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+
+</ion-content>

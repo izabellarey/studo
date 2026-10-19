@@ -1,0 +1,71 @@
+/*Header*/
+h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+p {
+  color: gray;
+}
+
+.card-height {
+  height: 170px !important; 
+  background-color:   #354F52;
+  box-shadow: 5px 5px 5px gray;
+  padding-left: 15px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  flex: 1;
+}
+
+/* Klassenstufen klickbar machen zur Weiterleitung */
+.klassen-card {
+  cursor: pointer;
+}
+
+ion-card-title {
+  color: #ffffff;
+}
+
+/* Zahlengröße auf allen pages einheitlich */
+ion-card-title b {
+  font-size: 1.5em;
+}
+
+ion-card-content {
+  color: #ffffff;
+}
+
+/* gleichmäßigkeit herstellen */
+ion-row > ion-col:first-child {
+  padding-inline-start: 0;
+}
+
+/* Trennstrich in der Card */
+.card-divider {
+  margin: 20px 0 0 0;
+  border: none;
+  border-top: 1px solid #84A98C;
+}
+
+/*Button Stundenplan erstellen*/
+.b_middle {
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  margin-top: 30px;        
+  margin-bottom: 24px;
+  width: 100%;
+}
+
+.b_custom {
+  background-color: #52796F;
+  color: white;
+  border: none;
+  padding: 20px 60px;
+  border-radius: 6px;
+  font-size: 20px;
+  font-weight: 400;
+}

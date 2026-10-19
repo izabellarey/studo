@@ -1,0 +1,53 @@
+<ion-content class="login-content" [fullscreen]="true">
+    <div class='login-wrapper'>
+        <div class="login-card">
+            <div class="login-logo">
+                <img src="assets/icon/logo_noText.png" alt="STudo Logo" />
+            </div>
+            <h1 class="login-title">STudo</h1>
+            <p class="login-subtitle">Melden Sie sich an, um fortzufahren</p>
+
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="login-form">
+                <div class="login-field">
+                    <label class="login-label" for="benutzername">Benutzername</label>
+                    <div class="login-input-wrapper">
+                        <ion-icon name="mail-outline"></ion-icon>
+                        <input
+                            id="benutzername"
+                            type="text"
+                            formControlName="benutzername"
+                            placeholder="Benutzername eingeben"
+                            autocomplete="username"
+                        />
+                    </div>
+                    @if (form.controls.benutzername.touched && form.controls.benutzername.invalid) {
+                        <p class="login-error">Bitte Benutzernamen eingeben</p>
+                    }
+                </div>
+
+                <div class="login-field">
+                    <label class="login-label" for="passwort">Passwort</label>
+                    <div class="login-input-wrapper">
+                        <ion-icon name="lock-closed-outline"></ion-icon>
+                        <input
+                            id="passwort"
+                            [type]="showPassword ? 'text' : 'password'"
+                            formControlName="passwort"
+                            placeholder="••••••••"
+                            autocomplete="current-password"
+                        />
+                        <ion-icon class="login-toggle-visibility" [name]="showPassword ? 'eye-off-outline' : 'eye-outline'" (click)="showPassword = !showPassword"></ion-icon>
+                    </div>
+                    @if (form.controls.passwort.touched && form.controls.passwort.invalid) {
+                        <p class="login-error">Passwort muss mind. 6 Zeichen haben</p>
+                    }
+                </div>
+
+                <ion-button expand="block" type="submit" class="login-submit" [disabled]="isSubmitting">Anmelden</ion-button>
+            </form>
+
+            <div class="login-footer-divider"></div>
+            <p class="login-footer">© {{currentYear}} STudo</p>
+        </div>
+    </div>
+</ion-content>

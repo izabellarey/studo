@@ -1,0 +1,210 @@
+/*Kopfzeile*/
+h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+p {
+    color: gray;
+}
+
+/*Allgemeine Designs*/
+label {
+  text-transform: uppercase;
+  color: grey;
+  font-weight: bold;
+  font-size: small;
+  display: block;
+  margin-bottom: 10px;
+}
+
+ion-input {
+  width: 98%;
+  border-color: gray;
+  --highlight-color-focused: #354F52;
+  margin-bottom: 10px;
+}
+
+/*Jahreswechsel button*/
+.jahreswechsel {
+  background-color: #354F52;
+  color: #ffffff;
+  width: fit-content;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-radius: 10px;
+  align-items: center;
+  height: 50px;
+  font-size: 17px;
+  margin-top: 20px;
+  justify-content: center;
+  position: absolute;
+  right: 15px;
+  top:10px;
+
+}
+
+.jahreswechsel:hover {
+  background-color: #52796F;
+}
+
+/*Filterliste*/
+.filter-aktion-leiste {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.filter-chips {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-chip {
+  border-radius: 20px;
+  background:#cad2c5;
+  text-transform: none;
+  height: 40px;
+  width: fit-content;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: medium;
+  color: #ffffff;
+  font-weight: 800;
+  box-shadow: 2px 2px 5px gray ;
+}
+
+.filter-chip.aktiv {
+  --background: #52796F;
+  --background-hover: #2f3e46;
+  --background-activated: #52796F;
+  --color: #ffffff;
+}
+
+/*Stundenplan- Tabelle*/
+.stundenplan-container {
+  width: 100%;
+  margin-top: 25px;
+  overflow-x: auto;
+}
+
+.stundenplan {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.stundenplan thead th {
+  height: 45px;
+  padding: 0 10px;
+  text-align: left;
+  font-size: 14px;
+  font-weight: 600;
+  border-bottom: 1px solid #ddd;
+}
+
+.stundenplan .stunden-spalte {
+  width: 90px;
+}
+
+.stundenplan tbody tr {
+  height: 94px;
+  border-bottom: 1px solid #ddd;
+}
+
+.stunden-info {
+  padding: 10px 14px;
+  text-align: left;
+  vertical-align: middle;
+  background: white;
+}
+
+
+.stunden-info strong {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.stunden-info small {
+  display: block;
+  font-size: 11px;
+  color: #777;
+  white-space: nowrap;
+}
+
+.stundenplan td {
+  padding: 10px;
+  vertical-align: middle;
+  border: none;
+}
+
+.unterricht {
+  min-height: 52px;
+  padding: 10px 13px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #568078;
+  color: white;
+}
+
+
+.unterricht strong {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 3px;
+}
+
+.unterricht span {
+  font-size: 12px;
+  opacity: 0.95;
+}
+
+.frei {
+  display: block;
+  text-align: left;
+  color: #aaa;
+  font-size: 13px;
+}
+
+/*Schuljahr*/
+.schuljahr {
+  margin-top: 25px;
+}
+
+
+.schuljahr h4 {
+  margin-bottom: 4px;
+}
+
+
+.schuljahr p {
+  margin-top: 0;
+}
+
+/*Archiv*/
+.archiv-container {
+  margin-top: 30px;
+}
+
+.archiv-eintrag {
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 12px;
+}
+
+
+.archiv-eintrag h3 {
+  margin-top: 0;
+}
+
+

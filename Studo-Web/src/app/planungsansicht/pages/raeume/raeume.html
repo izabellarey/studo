@@ -1,0 +1,83 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Räume und Kapazitäten</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <div class="buttonrechts">
+    <h1>Räume und Kapazitäten</h1>
+
+    <!-- Button zum anlegen eines neuen Raums -->
+    <ion-button class="b1_rcolor" (click)="openAddModal()">
+      <ion-icon slot="start" name="add"></ion-icon>
+      Raum hinzufügen
+    </ion-button>
+  </div>
+
+  <p class="raeume_p">Verwaltungs-, und Belegungsstatus aller Räume in Haupt-, und Nebengebäuden</p>
+
+  <!-- Die Card wird jeweils in dem Format erstellt und für nur so viele Räume, wie auch angelegt wurden -->
+<ion-grid class="ion-no-padding">
+  <ion-row>
+    @for (raum of raumService.alleRaeume(); track raum.id) {
+      <ion-col size="12" size-md="6" size-lg="3">
+        <ion-card class="card-height raum-card">
+          <ion-card-header>
+            <div class="raum-card-header-row">
+              <ion-card-title><b>{{ raum.bezeichnung }}</b></ion-card-title>
+            </div>
+          </ion-card-header>
+          <ion-card-content>
+            Raumart: {{ raum.art }}<br />
+            Kapazität: {{ raum.kapazitaet }} Personen<br />
+            <a class="raum2-link" (click)="openRaumbesetzung(raum)">
+              Raumbesetzung anzeigen
+            </a>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    }
+  </ion-row>
+</ion-grid>
+
+  <!-- Modal: hier werden neue Räume angelegt -->
+  <ion-modal [isOpen]="isAddModalOpen" (didDismiss)="closeAddModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Raum anlegen</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeAddModal()">Schließen</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <div class="modal-form">
+          <ion-item>
+            <ion-label position="stacked">Raumname</ion-label>
+            <ion-input [(ngModel)]="modaldata.bezeichnung" placeholder="z. B. R101"></ion-input>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Raumart</ion-label>
+            <ion-select [(ngModel)]="modaldata.art" placeholder="Raumart wählen">
+              @for (a of raumarten; track a){<ion-select-option [value]="a">
+                {{ a }}
+              </ion-select-option>}
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label position="stacked">Kapazität</ion-label>
+            <ion-input type="number" [(ngModel)]="modaldata.kapazitaet" placeholder="z. B. 30"></ion-input>
+          </ion-item>
+        </div>
+
+        <ion-button expand="block" class="b1_rcolor" (click)="addRaum()">Hinzufügen</ion-button>
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+
+</ion-content>

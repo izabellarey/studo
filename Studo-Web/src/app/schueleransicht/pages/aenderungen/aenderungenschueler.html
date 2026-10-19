@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Aenderungen</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <h1>Änderungen am Stundenplan</h1>
+
+  <p>Alle Änderungen des Stundenplans</p>
+
+  <!-- Änderungsverlauf(steuerung)Html -->
+  <div class="seite">
+  <!-- Damit die Seite nicht nach einem fehler aussieht, wird beim laden der änderungen "Wird geladen..." angezeigt-->
+  @if (laedt()) {
+    <p>Wird geladen …</p>
+  <!-- Fehler beim Laden -->
+  } @else if (fehler()) {
+    <p>Änderungen konnten nicht geladen werden.</p>
+  <!-- Änderung erscheinen im Verlauf -->
+  } @else {
+    @for (a of aenderungen(); track a.id) {
+      <div class="karte" [class]="typKlasse(a)">
+        <p class="karte-titel">{{ a.titel }}</p>
+        <p class="karte-text">{{ a.beschreibung }}</p>
+      </div>
+    } @empty {
+      <p>Keine Änderungen vorhanden</p>
+    }
+  }
+  </div>
+</ion-content>

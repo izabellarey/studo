@@ -1,0 +1,7 @@
+{
+  "name": "Studo-Web",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

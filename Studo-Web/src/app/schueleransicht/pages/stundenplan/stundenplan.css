@@ -1,0 +1,118 @@
+h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--ion-text-color);
+}
+ 
+p {
+    color: #676d71
+}
+ 
+.legende {
+  display: flex;
+  gap: 20px;
+  margin: 16px 0;
+  font-size: 14px;
+  color: #676d71;
+}
+ 
+.legende span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+ 
+.farbe {
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
+}
+ 
+.farbe.normal { background: #cad2c5; border-left: 4px solid #52796F; }
+.farbe.geaendert { background: #fdf1d6; border-left: 4px solid #e9a23b; }
+.farbe.frei { background: #eeeeee; border-left: 4px solid #9aa0a4; }
+
+.plan-tabelle {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  table-layout: fixed;
+}
+ 
+.plan-tabelle th {
+  padding: 8px 12px;
+  text-align: left;
+  background: #52796F;
+  color: #ffffff
+}
+ 
+.plan-tabelle th:first-child {
+  width: 110px;
+}
+ 
+.plan-tabelle td {
+  padding: 4px;
+  vertical-align: top;
+  border-bottom: 1px solid #e3e6e4;
+  height: 70px;
+}
+ 
+.zeit {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px !important;
+  font-size: 13px;
+  color: #676d71;
+}
+ 
+.zeit strong {
+  font-size: 16px;
+  color: var(--ion-text-color);
+}
+ 
+.leer {
+  padding: 20px 12px !important;
+  color: #676d71;
+}
+
+.stunde {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  height: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #cad2c5;
+  border-left: 4px solid #52796F;
+  color: #2f3e46;
+  font-size: 13px;
+}
+ 
+.stunde strong {
+  font-size: 15px;
+}
+ 
+.stunde.geaendert {
+  background: #fdf1d6;
+  border-left-color: #e9a23b;
+}
+ 
+.stunde.frei {
+  background: #eeeeee;
+  border-left-color: #9aa0a4;
+  color: #9aa0a4;
+}
+ 
+.stunde.frei strong {
+  text-decoration: line-through;
+}
+ 
+.hinweis {
+  font-size: 12px;
+  font-weight: 600;
+}
+ 
+.hinweis.offen {
+  color: #dc2626;
+}

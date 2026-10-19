@@ -1,0 +1,48 @@
+<ion-split-pane contentId="main-content">
+  <ion-menu contentId="main-content" type="overlay">
+    <ion-content>
+      <div class="sidebar">
+        <div class="logo">
+          <ion-img
+            src="assets/STudo_Logo_LightText_H100.png"
+            alt="Studo Logo"
+          ></ion-img>
+        </div>
+ 
+        <a routerLink="stundenplan" routerLinkActive="active">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span>Stundenplan</span>
+        </a>
+ 
+        <a routerLink="aenderungen" routerLinkActive="active">
+          <ion-icon name="sync-outline"></ion-icon>
+          <span>Änderungen</span>
+        </a>
+ 
+        <a routerLink="raeume" routerLinkActive="active">
+          <ion-icon name="business-outline"></ion-icon>
+          <span>Räume</span>
+        </a>
+ 
+        <a (click)="authService.logout()"><ion-icon name="log-out-outline"></ion-icon><span>Log out</span></a>
+      </div>
+    </ion-content>
+  </ion-menu>
+ 
+  <div id="main-content" class="main-content">
+    <div class="Topnav">
+      <!--<button class="top-button" [title]="vollerName()">
+        <div class="top-avatar">{{ kuerzel() }}</div>
+      </button>-->
+ 
+      <!--<button class="notifications" routerLink="/lehreransicht/aenderungen" aria-label="Offene Änderungen">
+        <ion-icon name="notifications-outline"></ion-icon>
+        @if (anzahlOffen() > 0) {<span class="notifications-zahl">{{ anzahlOffen() }}</span>}
+      </button>-->
+    </div>
+ 
+    <div class="container">
+      <ion-router-outlet></ion-router-outlet>
+    </div>
+  </div>
+</ion-split-pane>

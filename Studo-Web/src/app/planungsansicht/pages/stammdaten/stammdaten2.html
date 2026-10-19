@@ -1,0 +1,311 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Stammdaten</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!--Überschrift-->
+<ion-content class="ion-padding">
+  <h1>
+    Stammdaten Konfiguration - {{ stammdatenService.schulprofilSignal()?.name }}
+  </h1>
+
+  <p>
+    Die länderspezifischen Regelungen des Bundeslandes {{
+    stammdatenService.schulprofilSignal()?.bundesland }} und der Schulform {{
+    stammdatenService.schulprofilSignal()?.schulform }} wurden übernommen und
+    können hier eingesehen werden. Zusätzlich ist es möglich die
+    Vertretungspriorität und das Stundenraster zu konfigurieren
+  </p>
+
+  <!--Container in denen die Daten konfiguriert werden-->
+  <div class="main-container">
+    <ion-grid>
+      <ion-row>
+        <!--Regelungen aus der Datenbank zu dem ausgewählten Bundesland und der ausgewählten Schulform-->
+        <ion-col class="regelungen">
+          <!--Stundenraster und Pausenregelungen - die feststehenden Regeln-->
+          <div class="stundenregeln">
+            <h3>Stundenraster & Pausenregelung pro Jahrgangsstufe</h3>
+
+            @for (jgId of jahrgangsstufenIds(); track jgId) {
+            <div class="jahrgansstufen">
+              <label>Jahrgangsstufe {{ jahrgangsnummerFuerId(jgId) }}</label>
+              @if (maximalbelastungFuerJahrgang(jgId); as belastung) {
+              <p>Max. Stunden pro Tag: {{ belastung.maxStundenTag }}</p>
+              <p>Max. Stunden pro Woche: {{ belastung.maxStundenWoche }}</p>
+              }
+
+              <table class="pausen-tabelle">
+                <thead>
+                  <tr>
+                    <th>Pause nach...</th>
+                    <th>Dauer in Minuten</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (pause of pausenregelFuerJahrgang(jgId); track pause.id)
+                  {
+                  <tr>
+                    <td>{{ pause.mindestpauseNachStunden }}. Stunde</td>
+                    <td>{{ pause.mindestdauerMinuten }} Min.</td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+            }
+
+            <!--Stundenraster - nicht in der Jahrgangsschleife, weil das auf alle Jahrgänge zutrifft-->
+            @if (stundenraster(); as raster) {
+            <div class="stundenraster">
+              <label>Stundenraster</label>
+              <p>
+                Schulbeginn: {{ raster.schulbeginn }} Uhr &nbsp; | &nbsp;
+                Stundendauer: {{ raster.stundendauer }} Min. &nbsp; | &nbsp; {{
+                raster.stundenProTag }} Stunden/Tag
+              </p>
+
+              <table class="pausen-tabelle">
+                <thead>
+                  <tr>
+                    <th>Stunde</th>
+                    <th>Beginn</th>
+                    <th>Ende</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  @for (slot of raster.zeitslots; track slot.id) {
+                  <tr>
+                    <td>{{ slot.stundennummer }}</td>
+                    <td>{{ slot.start }}</td>
+                    <td>{{ slot.ende }}</td>
+                  </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+            }
+          </div>
+        </ion-col>
+
+        <ion-col>
+          <div class="pflichtfächer">
+            <h3>Pflichtfächer & Stundenvorgabe</h3>
+            <ion-accordion-group class="ebene-1">
+              <ion-accordion value="hauptfach">
+                <ion-item slot="header">
+                  <label>Hauptfächer</label>
+                </ion-item>
+
+                <div slot="content">
+                  <ion-accordion-group class="ebene-2">
+                    @for (fach of hauptfaecher(); track fach.fachId) {
+                    <ion-accordion [value]="'haupt-' + fach.fachId">
+                      <ion-item slot="header">
+                        <label
+                          >{{ fach.fachname }} ({{ fach.fachkuerzel }})</label
+                        >
+                      </ion-item>
+
+                      <div slot="content">
+                        <table class="stunden-tabelle">
+                          <thead>
+                            <tr>
+                              <th>Jahrgangsstufe</th>
+                              <th>Stundenanzahl</th>
+                              <th>Blockung bevorzugt</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (jgId of jahrgangsstufenIds(); track jgId) {
+                            @if (stufenFuerFach(fach, jgId); as stufe) {
+                            <tr>
+                              <td>{{ jahrgangsnummerFuerId(jgId) }}</td>
+                              <td>{{ stufe.stundenanzahl }}</td>
+                              <td>
+                                <ion-toggle
+                                  [(ngModel)]="stufe.doppelstundenBevorzugt"
+                                  (ionChange)="stufenvorgabeFuerFachSpeichern(fach.fachId, stufe)"
+                                ></ion-toggle>
+                              </td>
+                            </tr>
+                            } }
+                          </tbody>
+                        </table>
+                      </div>
+                    </ion-accordion>
+                    }
+                  </ion-accordion-group>
+                </div>
+              </ion-accordion>
+            </ion-accordion-group>
+
+            <!--Popup-->
+            <div class="popup" [class.active]="popupIsOpen">
+              <div class="popup-content">
+                <h3>Neues Fach anlegen</h3>
+
+                <button class="close" (click)="openPopup()">
+                  <ion-icon name="close-outline"></ion-icon>
+                </button>
+
+                <label>Name</label>
+                <ion-input
+                  [(ngModel)]="formData.name"
+                  fill="outline"
+                  placeholder="Namen eingeben"
+                ></ion-input>
+
+                <label>Kürzel</label>
+                <ion-input
+                  [(ngModel)]="formData.kuerzel"
+                  fill="outline"
+                  placeholder="Kürzel eingeben"
+                ></ion-input>
+
+                <label>Raum</label>
+                <ion-item>
+                  <ion-select
+                    [(ngModel)]="formData.benoetigterRaumtyp"
+                    placeholder="Raumart wählen"
+                  >
+                    <ion-select-option>KLASSENRAUM</ion-select-option>
+                    <ion-select-option>BIOLOGIERAUM</ion-select-option>
+                    <ion-select-option>PHSYIKRAUM</ion-select-option>
+                    <ion-select-option>CHEMIERAUM</ion-select-option>
+                    <ion-select-option>KUNSTRAUM</ion-select-option>
+                    <ion-select-option>MUSIKRAUM</ion-select-option>
+                    <ion-select-option>INFORMATIK</ion-select-option>
+                    <ion-select-option>SPORTHALLE</ion-select-option>
+                    <ion-select-option>AULA</ion-select-option>
+                  </ion-select>
+                </ion-item>
+
+                <button class="speichern" (click)="speichern()">
+                  Fach anlegen
+                </button>
+              </div>
+            </div>
+
+            <!--Weitere Fächer-->
+            <ion-accordion-group class="ebene-1">
+              <ion-accordion value="weitere">
+                <ion-item slot="header">
+                  <label>Weitere Fächer</label>
+                </ion-item>
+
+                <div slot="content">
+                  <button class="speichern" (click)="openPopup()">
+                    Neues Fach anlegen
+                  </button>
+                  <ion-accordion-group class="ebene-2">
+                    @for (fach of nichtHauptfaecher(); track fach.fachId) {
+                    <ion-accordion [value]="'weitere-' + fach.fachId">
+                      <ion-item slot="header">
+                        <label
+                          >{{ fach.fachname }} ({{ fach.fachkuerzel }})</label
+                        >
+                      </ion-item>
+                      <div slot="content">
+                        <table class="stunden-tabelle">
+                          <thead>
+                            <tr>
+                              <th>Jahrgangsstufe</th>
+                              <th>Stunden</th>
+                              <th>Aktiv</th>
+                              <th>Blockung bevorzugt</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            @for (jgId of jahrgangsstufenIds(); track jgId) {
+                            @if (stufenFuerFach(fach, jgId); as stufe) {
+                            <tr>
+                              <td>{{ jahrgangsnummerFuerId(jgId) }}</td>
+                              <td>
+                                <ion-input
+                                  type="number"
+                                  [(ngModel)]="stufe.stundenanzahl"
+                                  (ionBlur)="stufenvorgabeFuerFachSpeichern(fach.fachId, stufe)"
+                                ></ion-input>
+                              </td>
+                              <td>
+                                <ion-toggle
+                                  [(ngModel)]="stufe.aktiv"
+                                  (ionChange)="stufenvorgabeFuerFachSpeichern(fach.fachId, stufe)"
+                                ></ion-toggle>
+                              </td>
+                              <td>
+                                <ion-toggle
+                                  [(ngModel)]="stufe.doppelstundenBevorzugt"
+                                  (ionChange)="stufenvorgabeFuerFachSpeichern(fach.fachId, stufe)"
+                                ></ion-toggle>
+                              </td>
+                            </tr>
+                            } @else {
+                            <tr>
+                              <td>{{ jahrgangsnummerFuerId(jgId) }}</td>
+                              <td colspan="3">
+                                <button
+                                  class="speichern"
+                                  (click)="stufeFuerFachAnlegen(fach, jgId)"
+                                >
+                                  Stundenvorgabe für diese Jahrgangsstufe
+                                  anlegen
+                                </button>
+                              </td>
+                            </tr>
+                            } }
+                          </tbody>
+                        </table>
+                      </div>
+                    </ion-accordion>
+                    }
+                  </ion-accordion-group>
+                </div>
+              </ion-accordion>
+            </ion-accordion-group>
+          </div>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <!--Vertretungspriorität Konfigurieren-->
+        <ion-col>
+          <div class="vertretungspriorität">
+            <h3>Prioritäten</h3>
+            <p>
+              Je weiter eine Jahrgangsstufe oben platziert ist, desto eher wird
+              bei den initialen Stundenplänen darauf geachtet, dass der
+              Stundenplan wenig Freistunden hat.
+            </p>
+            <!--Reorder, damit die Klassenstufen rumgeschoben werden können-->
+            <ion-list class="liste">
+              <ion-reorder-group
+                [disabled]="false"
+                (ionItemReorder)="reorderPrioritaeten($event)"
+              >
+                @for (prioritaet of vertretungsprioritaeten; track
+                prioritaet.jahrgangsstufeId) {
+                <ion-item>
+                  <ion-label
+                    >Jahrgangsstufe {{
+                    jahrgangsnummerFuerId(prioritaet.jahrgangsstufeId) }}
+                    (Priotität: {{ prioritaet.prio }})</ion-label
+                  >
+                  <ion-reorder slot="end"></ion-reorder>
+                </ion-item>
+                }
+              </ion-reorder-group>
+            </ion-list>
+            <button
+              class="speichern"
+              (click)="vertretungsprioritaetenSpeichern()"
+            >
+              Vertretungspriorität speichern
+            </button>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+</ion-content>

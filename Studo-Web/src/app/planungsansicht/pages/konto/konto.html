@@ -1,0 +1,85 @@
+<ion-header>
+    <ion-toolbar>
+        <ion-title>Profil-Einstellungen</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h1>Profil-Einstellungen</h1>
+  <p>Verwalten Sie Ihre persönlichen Angaben und Sicherheits-Konfigurationen</p>
+
+  <ion-grid>
+    <ion-row class="name-row">
+        <!-- Linke Spalte für persönliche Daten-->
+         <ion-col size = '12' size-md='6'>
+            <ion-card>
+                <ion-card-content>
+                    <div class='profile-header'>
+                        <ion-avatar>
+                            <div class="avatar-initials">{{accountService.kuerzel()}}</div>
+                        </ion-avatar>
+                        <div>
+                            <h2>{{accountService.vorname()}} {{accountService.nachname()}}</h2>
+                            <ion-badge color="light">Planung</ion-badge>
+                        </div>
+                    </div>
+
+                    <h3>Persönliche Daten</h3>
+
+                    <ion-row class="name-row">
+                        <ion-col size="6">
+                            <ion-item lines="none" class="form-item">
+                                <ion-input 
+                                    label="Vorname"
+                                    label-placement="stacked"
+                                    [(ngModel)]="vornameEntwurf">
+                                </ion-input>
+                            </ion-item>
+                        </ion-col>
+                        <ion-col size="6">
+                            <ion-item lines="none" class="form-item">
+                                <ion-input 
+                                    label="Nachname"
+                                    label-placement="stacked"
+                                    [(ngModel)]="nachnameEntwurf">
+                                </ion-input>
+                            </ion-item>
+                        </ion-col>
+                    </ion-row>
+
+                    <div class="button-row">
+                        <ion-button (click)="onChangeSpeichern()">Änderungen speichern</ion-button>
+                    </div>
+                </ion-card-content>
+            </ion-card>
+         </ion-col>
+
+         <!-- Rechte Spalte für Sicherheit und Passwort -->
+         <ion-col size="12" size-md="6">
+            <ion-card>
+                <ion-card-content>
+                    <h3>Sicherheit & Passwort</h3>
+                    <p>Es wird empfohlen, das Passwort regelmäßig zu ändern, um die Kontosicherheit zu gewährleisten</p>
+
+                    <ion-item lines="none" class="form-item">
+                        <ion-label position="stacked">Aktuelles Passwort</ion-label>
+                        <ion-input type="password" [(ngModel)]="altesPasswort"></ion-input>
+                    </ion-item>
+
+                    <ion-item lines="none" class="form-item">
+                        <ion-label position="stacked">Neues Passwort</ion-label>
+                        <ion-input type="password" placeholder="Neues Passwort eingeben" [(ngModel)]="neuesPasswort"></ion-input>
+                    </ion-item>
+
+                     <ion-item lines="none" class="form-item">
+                        <ion-label position="stacked">Passwort bestätigen</ion-label>
+                        <ion-input type="password" placeholder="Neues Passwort wiederholen" [(ngModel)]="passwortBestaetigen"></ion-input>
+                    </ion-item>
+
+                    <ion-button expand="block" (click)="onPasswprtAendern()">Passwort ändern</ion-button>
+                </ion-card-content>
+            </ion-card>
+         </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>

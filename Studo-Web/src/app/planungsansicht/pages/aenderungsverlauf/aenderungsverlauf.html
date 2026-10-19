@@ -1,0 +1,152 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Änderungsverlauf</ion-title>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content class="ion-padding">
+  <h1>Änderungsverlauf</h1>
+  <p>Offene und abgeschlossene Anpassungen an Stundenplänen und Vertretungen</p>
+ 
+ 
+<!------------------------------------ Offene Änderungen ---------------------------------------->
+ 
+ 
+  <div class="bereich-header">
+    <h2>Offene Änderungen</h2>
+    <span class="zaehler" [class.leer]="anzahlOffen() === 0">{{ anzahlOffen() }} offen</span>
+  </div>
+ 
+  @if (offeneFehler() && offene().length === 0) {
+    <div class="hinweis fehler">
+      <p>Offene Änderungen konnten nicht geladen werden.</p>
+      <ion-button size="small" (click)="offeneErneutLaden()">Erneut laden</ion-button>
+    </div>
+  } @else if (offeneLaden() && offene().length === 0) {
+    <div class="hinweis"><ion-spinner name="crescent"></ion-spinner></div>
+  } @else if (offene().length === 0) {
+    <div class="hinweis"><p>Keine offenen Änderungen.</p></div>
+  } @else {
+    <div class="offen-liste">
+      @for (a of offene(); track a.quelle.id) {
+        <div class="offen-karte" [class]="'offen-karte ' + a.badge">
+          <div class="offen-text">
+            <span [class]="'badge ' + a.badge">{{ a.badgeText }}</span>
+            <p class="offen-titel">{{ a.titel }}</p>
+            @if (a.beschreibung) {
+              <p class="offen-beschreibung">{{ a.beschreibung }}</p>
+            }
+          </div>
+ 
+          <div class="offen-aktion">
+            <span class="zeit">{{ a.zeit }}</span>
+            <ion-button size="small" (click)="bearbeiten(a.quelle)">
+              <ion-icon name="create-outline"></ion-icon>
+              Bearbeiten
+            </ion-button>
+          </div>
+        </div>
+      }
+    </div>
+  }
+ 
+ 
+<!------------------------------------ Abgeschlossene Änderungen ---------------------------------------->
+ 
+ 
+  <div class="bereich-header">
+    <h2>Abgeschlossene Änderungen</h2>
+  </div>
+ 
+ 
+  <!------------------------------------ Filterleiste ---------------------------------------->
+ 
+ 
+  <div class="filter-aktion-leiste">
+    <ion-searchbar
+      class="suche"
+      placeholder="Nach Klasse, Lehrkraft oder Raum suchen"
+      [value]="suche()"
+      [debounce]="300"
+      showClearButton="always"
+      (ionInput)="sucheGeaendert($event)"
+    ></ion-searchbar>
+ 
+    <div class="filter-chips">
+      @for (f of anlassFilter; track f.typ) {
+        <ion-button class="filter-chip" [class.aktiv]="typFilter() === f.typ" (click)="typUmschalten(f.typ)">
+          {{ f.label }}
+        </ion-button>
+      }
+    </div>
+  </div>
+ 
+ 
+  <!------------------------------------ Tabelle abgeschlossene Änderungen ---------------------------------------->
+ 
+ 
+  <table class="verlauf-tabelle">
+    <thead>
+      <tr>
+        <th>Uhrzeit</th>
+        <th>Status</th>
+        <th>Betroffene Einheit</th>
+        <th>Änderung</th>
+        <th>Anlass</th>
+      </tr>
+    </thead>
+ 
+    <tbody>
+      @for (g of gruppen(); track g.schluessel) {
+        <tr class="tag-zeile">
+          <td colspan="5">{{ g.titel }}</td>
+        </tr>
+ 
+        @for (e of g.eintraege; track e.id) {
+          <tr>
+            <td class="zeit">{{ e.uhrzeit }}</td>
+            <td><span [class]="'badge ' + e.badge">{{ e.badgeText }}</span></td>
+            <td class="einheit">{{ e.einheit }}</td>
+            <td>{{ e.nachricht }}</td>
+            <td>{{ e.anlass }}</td>
+          </tr>
+        }
+      }
+    </tbody>
+  </table>
+ 
+ 
+  <!------------------------------------ Hinweise ---------------------------------------->
+ 
+ 
+  @if (abgLaden() && gefiltert().length === 0) {
+    <div class="hinweis"><ion-spinner name="crescent"></ion-spinner></div>
+  }
+ 
+  @if (!abgLaden() && !abgFehler() && gefiltert().length === 0) {
+    <div class="hinweis">
+      @if (filterAktiv()) {
+        <p>Keine abgeschlossenen Änderungen passen zu diesem Filter.</p>
+        <ion-button size="small" (click)="filterZuruecksetzen()">Filter zurücksetzen</ion-button>
+      } @else {
+        <p>Noch keine abgeschlossenen Änderungen.</p>
+      }
+    </div>
+  }
+ 
+  @if (abgFehler()) {
+    <div class="hinweis fehler">
+      <p>Abgeschlossene Änderungen konnten nicht geladen werden.</p>
+      <ion-button size="small" (click)="abgeschlosseneLaden()">Erneut laden</ion-button>
+    </div>
+  }
+ 
+  @if (!weitereVorhanden() && gefiltert().length > 0) {
+    <p class="ende">Alle {{ gefiltert().length }} Änderungen angezeigt.</p>
+  }
+ 
+  <ion-infinite-scroll threshold="200px" [disabled]="!weitereVorhanden()" (ionInfinite)="mehrAnzeigen($event)">
+    <ion-infinite-scroll-content loadingSpinner="crescent"></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+ 
+</ion-content>

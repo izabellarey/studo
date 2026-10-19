@@ -1,0 +1,211 @@
+/*Header*/
+h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+h2 {
+  color: #ffffff;
+  font-weight: 700;
+}
+
+p {
+  color: gray;
+}
+
+/*Allgemeine Einstellungen für die Weiterleitungs-Divs*/
+.weiterleitungen {
+  display: flex;
+  gap: 20px;
+}
+
+.shortcut {
+  flex-shrink: 0;
+  text-align: left;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/*Div zur Klassenauswahl*/
+.klassenauswahl {
+  background-color:   #354F52;
+  box-shadow: 5px 5px 5px gray;
+  width: 400px;
+  height: fit-content;
+  align-items: center;
+  padding-left: 15px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  flex: 1;
+}
+
+.klassenauswahl p {
+  color: #ffffff;
+}
+
+.klassenauswahl a {
+  color: #84A98C;
+  flex-shrink: 0;
+  text-align: left;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+/*Div zur Raumauswahl*/
+.raumauswahl {
+  background-color: #354F52;
+  flex: 2;
+  box-shadow: 5px 5px 5px gray;
+  width: 400px;
+  height: fit-content;
+  align-items: center;
+  padding-left: 15px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+}
+
+.raumauswahl p {
+  color: #ffffff;
+}
+
+.raumauswahl a {
+  color: #84A98C;
+  flex-shrink: 0;
+  text-align: left;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+}
+
+/*Div zur Ereignis Eintragung*/
+.ereignis {
+  background-color: #354F52;
+  box-shadow: 5px 5px 5px gray;
+  width: 400px;
+  height: fit-content;
+  align-items: center;
+  padding-left: 15px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  flex: 1;
+}
+
+.ereignis p {
+  color: #ffffff;
+}
+
+.ereignis span {
+  color: #84A98C;
+  flex-shrink: 0;
+  text-align: left;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/*Popup*/
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5); /* Backdrop */
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup.active {
+  display: flex;
+}
+
+.popup-content {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+.popup-content .close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: transparent;
+  border: none;
+  font-size: 1.5rem;
+}
+
+/*Button zum Schließen des Popups*/
+.close {
+  background-color: #CAD2C5;
+  color: #354F52;
+  height: 30px;
+  width: 30px;
+  font-size: 17px;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  position: absolute;
+}
+
+/*Dropdownmenü*/
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 100%;
+}
+
+ion-item {
+  --padding-start: 10px;
+  margin-bottom: 16px; 
+}
+
+label {
+  text-transform: uppercase;
+  color: grey;
+  font-weight: bold;
+  font-size: small;
+  display: block;
+  margin-bottom: 10px;
+}
+
+/*Button um das Ereignis zu speichern*/
+.button {
+  background-color: #52796F;
+  color: #ffffff;
+  width: 94.5%;
+  border-radius: 10px;
+  align-items: center;
+  padding-left: 20px;
+  height: 50px;
+  font-size: 17px;
+  margin-top: 20px;
+}
+
+.button:hover {
+  background-color: #354F52;
+}
+
+/*Ereignisanzeige*/
+ion-item.ereignis-art {
+  --border-radius: 12px;
+  border-radius: 12px;
+  margin-bottom: 10px;
+  --padding-start: 16px;
+  --inner-padding-end: 16px;
+  overflow: hidden; 
+}
+

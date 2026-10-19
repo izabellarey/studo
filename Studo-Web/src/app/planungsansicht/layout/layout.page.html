@@ -1,0 +1,111 @@
+<ion-split-pane contentId="main-content">
+  <ion-menu contentId="main-content" type="overlay">
+    <ion-content>
+      <div class="sidebar">
+        <div class="logo">
+          <ion-img
+            src="assets/STudo_Logo_LightText_H100.png"
+            alt="Studo Logo"
+          ></ion-img>
+        </div>
+
+        <a routerLink="dashboard" routerLinkActive="active">
+          <ion-icon name="grid-outline"></ion-icon>
+          <span>Dashboard</span>
+        </a>
+
+        <a routerLink="schulansicht" routerLinkActive="active">
+          <ion-icon name="school-outline"></ion-icon>
+          <span>Schulansicht</span>
+        </a>
+
+        <a routerLink="klassen" routerLinkActive="active">
+          <ion-icon name="book-outline"></ion-icon>
+          <span>Klassen</span>
+        </a>
+
+        <a routerLink="raeume" routerLinkActive="active">
+          <ion-icon name="business-outline"></ion-icon>
+          <span>Räume</span>
+        </a>
+
+        <a routerLink="lehrer" routerLinkActive="active">
+          <ion-icon name="briefcase-outline"></ion-icon>
+          <span>Lehrer</span>
+        </a>
+
+        <a routerLink="schueler" routerLinkActive="active">
+          <ion-icon name="people-outline"></ion-icon>
+          <span>Schüler</span>
+        </a>
+
+        <a routerLink="admins" routerLinkActive="active">
+          <ion-icon name="shield-outline"></ion-icon>
+          <span>Admins</span>
+        </a>
+
+        <a routerLink="aenderungsverlauf" routerLinkActive="active">
+          <ion-icon name="sync-outline"></ion-icon>
+          <span>Änderungsverlauf</span>
+        </a>
+
+        <a routerLink="ereignisverlauf" routerLinkActive="active">
+          <ion-icon name="calendar-outline"></ion-icon>
+          <span>Ereignisverlauf</span>
+        </a>
+
+        <a routerLink="stammdaten" routerLinkActive="active">
+          <ion-icon name="server-outline"></ion-icon>
+          <span>Stammdaten</span>
+        </a>
+
+        <a (click)="authService.logout()"
+          ><ion-icon name="log-out-outline"></ion-icon><span>Log out</span></a
+        >
+      </div>
+    </ion-content>
+  </ion-menu>
+
+  <div id="main-content" class="main-content">
+    <div class="Topnav">
+      <!--
+      <ion-breadcrumbs>
+        <ion-breadcrumb href="pages/aenderungsverlauf/aenderungsverlauf.html">Änderungsverlauf</ion-breadcrumb>
+        <ion-breadcrumb href="pages/anfragen/anfragen.html">Anfragen</ion-breadcrumb>
+        <ion-breadcrumb href="pages/benutzerhandbuch/benutzerhandbuch.html">Benutzerhandbuch</ion-breadcrumb>
+        <ion-breadcrumb href="pages/dashboard/dashboard.html">Dashboard</ion-breadcrumb>
+        <ion-breadcrumb href="pages/klassen/klassen.html">Klassen</ion-breadcrumb>
+        <ion-breadcrumb href="pages/konto/konto.html">Konto</ion-breadcrumb>
+        <ion-breadcrumb href="pages/lehrer/lehrer.html">Lehrer</ion-breadcrumb>
+        <ion-breadcrumb href="pages/raeume/raeume.html">Räume</ion-breadcrumb>
+        <ion-breadcrumb href="pages/schulansicht/schulansicht.html">Schulansicht</ion-breadcrumb>
+        <ion-breadcrumb href="pages/stammdaten/stammdaten.html">Stammdaten</ion-breadcrumb>
+      </ion-breadcrumbs>
+    -->
+
+      <button
+        class="top-button"
+        routerLink="konto"
+        routerLinkActive="active"
+        [title]="accountService.vorname() + '' + accountService.nachname()"
+      >
+        <div class="top-avatar">{{accountService.kuerzel()}}</div>
+      </button>
+
+      <button
+        class="notifications"
+        routerLink="/planungsansicht/aenderungsverlauf"
+        aria-label="Offene Änderungen"
+      >
+        <ion-icon name="notifications-outline"></ion-icon>
+        @if (anzahlOffen() > 0) {<span class="notifications-zahl"
+          >{{anzahlOffen()}}</span
+        >}
+      </button>
+    </div>
+
+    <div class="container">
+      <ion-router-outlet></ion-router-outlet>
+    </div>
+  </div>
+</ion-split-pane>

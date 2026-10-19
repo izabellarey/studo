@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">STudo</string>
+    <string name="nutzername">Nutzername</string>
+    <string name="passwort">Passwort</string>
+    <string name="passwort_verbergen">Passwort verbergen</string>
+    <string name="passwort_anzeigen">Passwort anzeigen</string>
+    <string name="login">Login</string>
+    <string name="ausfall">Ausfall!</string>
+    <string name="nderung">Änderung!</string>
+    <string name="mo">Mo</string>
+    <string name="di">Di</string>
+    <string name="mi">Mi</string>
+    <string name="don">Do</string>
+    <string name="fr">Fr</string>
+    <string name="fehler">Fehler: %1$s</string>
+    <string name="keine_aenderungen_vorhanden">Keine Änderungen vorhanden.</string>
+    <string name="stundenplan">Stundenplan</string>
+    <string name="raueme">Räume</string>
+    <string name="aenderungen">Änderungen</string>
+    <string name="server_url">Server-URL</string>
+    <string name="speichern">Speichern</string>
+    <string name="gespeichert_aenderungen_wirken_sofort">Gespeichert. Änderungen wirken sofort.</string>
+    <string name="zurueck">Zurück</string>
+    <string name="studo_logo">STudo Logo</string>
+    <string name="einstellungen">Einstellungen</string>
+    <string name="logout">logout</string>
+</resources>

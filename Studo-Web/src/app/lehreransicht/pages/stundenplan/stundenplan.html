@@ -1,0 +1,67 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Stundenplan</ion-title>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content class="ion-padding">
+  <h1>Mein Stundenplan</h1>
+  <p>Deine Unterrichtsstunden dieser Woche inklusive Änderungen</p>
+ 
+ 
+ 
+  <div class="legende">
+    <span><i class="farbe normal"></i>Regulär</span>
+    <span><i class="farbe geaendert"></i>Geändert</span>
+    <span><i class="farbe frei"></i>Entfällt</span>
+  </div>
+ 
+  
+ @if (stundenListe().length === 0) {
+    <p>Für dich ist aktuell kein Unterricht eingeplant.</p>
+  }
+
+  <table class="plan-tabelle">
+    <thead>
+      <tr>
+        <th>Stunde</th>
+        @for (tag of wochentage; track tag.key) {
+          <th>{{ tag.name }}</th>
+        }
+      </tr>
+    </thead>
+ 
+    <tbody>
+      @for (slot of zeitslots(); track slot.stundennummer) {
+        <tr>
+          <td class="zeit">
+            <strong>{{ slot.stundennummer }}.</strong>
+            <span>{{ slot.start.slice(0, 5) }} - {{ slot.ende.slice(0, 5) }}</span>
+          </td>
+ 
+          @for (tag of wochentage; track tag.key) {
+            <td>
+              @if (stundeFinden(tag.key, slot.stundennummer); as s) {
+                <div class="stunde" [class.geaendert]="s.geaendert" [class.frei]="s.freistunde">
+                  <strong>{{ s.fachName }}</strong>
+                  <span>{{ s.lerngruppeKuerzel }} | {{ s.raumBezeichnung }}</span>
+ 
+                  @if (s.freistunde) {
+                    <span class="hinweis">Entfällt</span>
+                  } @else if (s.geaendert) {
+                    <span class="hinweis">Geändert</span>
+                  }
+ 
+                  @if (s.offeneAenderung) {
+                    <span class="hinweis offen">Noch nicht bestätigt</span>
+                  }
+                </div>
+              }
+            </td>
+          }
+        </tr>
+      } 
+    </tbody>
+  </table>
+ 
+</ion-content>

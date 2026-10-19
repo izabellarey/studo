@@ -1,0 +1,107 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Admins</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h1>Administratoren</h1>
+  <p>Systemrechte</p>
+
+  <!--Button zum Anlegen eines Admins (öffnet das Popup)-->
+  <button class="anlegen" (click)="openPopup()">
+    <ion-icon name="add-outline"></ion-icon>Admin hinzufügen
+  </button>
+
+  <!--Filterliste-->
+  <div class="filter-aktion-leiste">
+    <div class="filter-chips">
+      <button class="filter-chip" (click)="filterSetzen('alle')">Alle</button>
+      <button class="filter-chip" (click)="filterSetzen('deaktiviert')">
+        Deaktiviert
+      </button>
+    </div>
+  </div>
+
+  <!--Popup-->
+  <div class="popup" [class.active]="popupIsOpen">
+    <div class="popup-content">
+      <!--Je nachdem, ob man den Admin gerade erst anlegt oder gerade bearbeitet, ändert sich die Überschrift-->
+      <h3>
+        {{ bearbeitendId ? 'Admin bearbeiten' : 'Stammdaten des Administratoren'
+        }}
+      </h3>
+
+      <button class="close" (click)="openPopup()">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+
+      <!--Input Felder, in die die Daten eingetragen werden-->
+      <label>Vorname</label>
+      <ion-input
+        [(ngModel)]="formData.vorname"
+        fill="outline"
+        placeholder="Vornamen eingeben"
+      ></ion-input>
+
+      <label>Name</label>
+      <ion-input
+        [(ngModel)]="formData.name"
+        fill="outline"
+        placeholder="Nachnamen eingeben"
+      ></ion-input>
+
+      <label>Passwort</label>
+      <ion-input
+        type="password"
+        value="password"
+        [(ngModel)]="formData.passwort"
+        fill="outline"
+        placeholder="Passwort eingeben"
+      ></ion-input>
+
+      <!--Änderungen Speichern, auch hier je nachdem ob man gerade erst anlegt, oder bearbeitet-->
+      <button class="speichern" (click)="speichern()">
+        {{ bearbeitendId ? 'Änderungen speichern' : 'Admin anlegen' }}
+      </button>
+    </div>
+  </div>
+
+  <!--Übersicht der Admins auf der Webseite-->
+  <table class="admin-tabelle">
+    <thead>
+      <tr>
+        <th>Vorname</th>
+        <th>Name</th>
+        <th></th>
+      </tr>
+    </thead>
+    <!--Hier werden die Daten aus der Datenbank erhoben-->
+    <tbody>
+      @for (a of gefilterteListe(); track a.id) {
+      <tr>
+        <td>{{ a.vorname }}</td>
+        <td>{{ a.name }}</td>
+        <!--Buttons zum Bearbeiten und Deaktivieren-->
+        <td class="buttons">
+          <button
+            class="bearbeiten"
+            fill="clear"
+            (click)="bearbeitenStarten(a)"
+          >
+            <ion-icon name="create-outline"></ion-icon>
+          </button>
+
+          <button class="deaktivieren" fill="clear" (click)="statusAendern(a)">
+            @if (a.aktiv) {
+            <ion-icon name="close-circle-outline"></ion-icon>
+            } @else {
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+            }
+          </button>
+        </td>
+      </tr>
+      }
+    </tbody>
+  </table>
+</ion-content>

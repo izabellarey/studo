@@ -1,0 +1,325 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Lehrer</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!--Überschrift-->
+<ion-content class="ion-padding">
+  <h1>Lehrerübersicht</h1>
+  <p>Lehrkräfte, Beschäftigtenstatus, Fächerbelegung, etc. verwalten</p>
+
+  <!--Button zum Anlegen einer Lehrkraft (öffnet das Popup)-->
+  <button class="anlegen" (click)="openPopup()">
+    <ion-icon name="add-outline"></ion-icon>Lehrkraft anlegen
+  </button>
+
+  <!--Filterliste-->
+  <div class="filter-aktion-leiste">
+    <div class="filter-chips">
+      <button class="filter-chip" (click)="filterSetzen('alle')">Alle</button>
+      <button class="filter-chip" (click)="filterSetzen('deaktiviert')">
+        Deaktiviert
+      </button>
+    </div>
+  </div>
+
+  <!--Popup-->
+  <div class="popup" [class.active]="popupIsOpen">
+    <div class="popup-content">
+      <!--Je nachdem, ob man den Lehrer gerade erst anlegt oder gerade bearbeitet, ändert sich die Überschrift-->
+      <h3>
+        {{ bearbeitendId ? 'Lehrkraft bearbeiten' : 'Stammdaten der Lehrkraft
+        anlegen' }}
+      </h3>
+
+      <button class="close" (click)="openPopup()">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+
+      <!--Input Felder, in die die Daten eingetragen werden-->
+      <label>Vorname</label>
+      <ion-input
+        [(ngModel)]="formData.vorname"
+        fill="outline"
+        placeholder="Vornamen eingeben"
+      ></ion-input>
+
+      <label>Name</label>
+      <ion-input
+        [(ngModel)]="formData.name"
+        fill="outline"
+        placeholder="Nachnamen eingeben"
+      ></ion-input>
+
+      <label>Deputatsstunden</label>
+      <ion-input
+        type="number"
+        [(ngModel)]="formData.deputatsstunden"
+        fill="outline"
+        placeholder="Deputatsstunden"
+      ></ion-input>
+
+      <!--Beschäftigungsstatus via Dropdown Menü-->
+      <div class="form">
+        <label>Beschäftigtenstatus</label>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="Beschäftigtenstatus auswählen"
+            [(ngModel)]="formData.anstellungsverhaeltnis"
+          >
+            <ion-select-option value="VOLLZEIT">Vollzeit</ion-select-option>
+            <ion-select-option value="TEILZEIT">Teilzeit</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <!--Fächer ebenfalls via Dropdown Menü, hier aber mit multiple Choice-->
+      <div class="form">
+        <label>Unterrichtsfächer</label>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="Fächer auswählen"
+            [multiple]="true"
+            [(ngModel)]="formData.faecher"
+            [compareWith]="fachVergleichen"
+          >
+            @for (fach of verfuegbareFaecher(); track fach.id) {
+            <ion-select-option [value]="fach"
+              >{{ fach.kuerzel }}</ion-select-option
+            >
+            }
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <!--Präferenzen-->
+      <div class="form">
+        <label>Bevorzugte Klassen</label>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="Bevorzugte Klassen auswählen"
+            [multiple]="true"
+            [(ngModel)]="formData.praeferenzen"
+          >
+            @for (praeferenzen of teacherService.allePraeferenzen(); track
+            praeferenzen.id) {
+            <ion-select-option [value]="praeferenzen">
+              {{ praeferenzen.bezeichnung }} (Jahrgang {{
+              praeferenzen.jahrgangsnummer }})
+            </ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <!--Zeitliche Verfügbarkeit getrennt nach bevorzugt, nicht bevorzugt und geblockt-->
+      <div class="verfuegbarkeit-form">
+        <label>Unterrichtszeiten-Verfügbarkeit</label>
+
+        <!-- Bestehende Einträge, gruppiert nach Typ zur Übersicht -->
+        @for (typ of [verfTyp.BEVORZUGT, verfTyp.NEUTRAL,
+        verfTyp.NICHT_BEVORZUGT, verfTyp.GESPERRT]; track typ) { @if
+        (verfuegbarkeitNachTyp(typ).length > 0) {
+        <h4>{{ typ }}</h4>
+        @for (e of verfuegbarkeitNachTyp(typ); track e) {
+        <div class="verf-eintrag">
+          <span>
+            {{ e.wochentag }}, {{ e.zeitslotId === null ? 'Ganztägig' :
+            e.zeitslotId + '. Zeitslot' }} ({{ e.startdatum | date:'dd.MM.yy' }}
+            – {{ e.enddatum | date:'dd.MM.yy' }})
+          </span>
+          <ion-button fill="clear" color="danger" (click)="eintragEntfernen(e)">
+            <ion-icon name="close-outline"></ion-icon>
+          </ion-button>
+        </div>
+        } } }
+
+        <!-- Ein Formular für neue Einträge -->
+        <div class="neuer-eintrag">
+          <ion-item>
+            <ion-select
+              interface="popover"
+              [(ngModel)]="neuerEintrag.wochentag"
+              placeholder="Wochentag"
+            >
+              @for (tag of wochentage; track tag) {
+              <ion-select-option [value]="tag">{{ tag }}</ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+
+          <!-- Kein placeholder, Default ist bereits NEUTRAL gesetzt -> kann nie leer bleiben -->
+          <ion-item>
+            <ion-label>Bevorzugung</ion-label>
+            <ion-select [(ngModel)]="neuerEintrag.typ">
+              <ion-select-option [value]="verfTyp.BEVORZUGT"
+                >Bevorzugt</ion-select-option
+              >
+              <ion-select-option [value]="verfTyp.NEUTRAL"
+                >Neutral</ion-select-option
+              >
+              <ion-select-option [value]="verfTyp.NICHT_BEVORZUGT"
+                >Nicht bevorzugt</ion-select-option
+              >
+              <ion-select-option [value]="verfTyp.GESPERRT"
+                >Gesperrt</ion-select-option
+              >
+            </ion-select>
+          </ion-item>
+
+          <ion-item>
+            <ion-label>Ganztägig</ion-label>
+            <ion-toggle
+              [(ngModel)]="neuerEintrag.ganztaegig"
+              slot="end"
+            ></ion-toggle>
+          </ion-item>
+
+          <!-- Zeitslot statt Ionic-Uhrzeit -->
+          @if (!neuerEintrag.ganztaegig) {
+          <ion-item>
+            <ion-select
+              interface="popover"
+              [(ngModel)]="neuerEintrag.zeitslotId"
+              placeholder="Zeitslot"
+            >
+              @for (slot of stundenraster()?.zeitslots ?? []; track slot.id) {
+              <ion-select-option [value]="slot.id">
+                {{ slot.stundennummer }}. Stunde ({{ slot.start }} – {{
+                slot.ende }})
+              </ion-select-option>
+              }
+            </ion-select>
+          </ion-item>
+          }
+
+          <label>Gültig von</label>
+          <ion-datetime
+            presentation="date"
+            [(ngModel)]="neuerEintrag.gueltigVon"
+          ></ion-datetime>
+          <label>Gültig bis</label>
+          <ion-datetime
+            presentation="date"
+            [(ngModel)]="neuerEintrag.gueltigBis"
+          ></ion-datetime>
+
+          <button class="speichern" (click)="eintragHinzufuegen()">
+            Eintrag hinzufügen
+          </button>
+        </div>
+      </div>
+
+      <label>Passwort</label>
+      <ion-input
+        type="password"
+        value="password"
+        [(ngModel)]="formData.passwort"
+        fill="outline"
+        placeholder="Passwort eingeben"
+      ></ion-input>
+
+      <!--Änderungen Speichern, auch hier je nachdem ob man gerade erst anlegt, oder bearbeitet-->
+      <button class="speichern" (click)="speichern()">
+        {{ bearbeitendId ? 'Änderungen speichern' : 'Lehrer anlegen' }}
+      </button>
+    </div>
+  </div>
+
+  <!--Übersicht der Lehrer auf der Webseite-->
+  <ion-accordion-group>
+    @for (l of gefilterteListe(); track l.id) {
+    <ion-accordion [value]="'lehrer-' + l.id">
+      <ion-item slot="header">
+        <label>{{ l.vorname }} {{ l.name }} ({{ l.kuerzel }})</label>
+        <div class="buttons" slot="end">
+          <button
+            class="bearbeiten"
+            fill="clear"
+            (click)="bearbeitenStarten(l); $event.stopPropagation()"
+          >
+            <ion-icon name="create-outline"></ion-icon>
+          </button>
+
+          <button
+            class="deaktivieren"
+            fill="clear"
+            (click)="statusAendern(l); $event.stopPropagation()"
+          >
+            @if (l.aktiv) {
+            <ion-icon name="close-circle-outline"></ion-icon>
+            } @else {
+            <ion-icon name="checkmark-circle-outline"></ion-icon>
+            }
+          </button>
+        </div>
+      </ion-item>
+
+      <!--Inhalt der Accordions - Anzeige, was im Popup eingegeben wurde + Benutzername-->
+      <div slot="content" class="ion-padding">
+        <label>Benutzername</label>
+        <p>{{ l.benutzername }}</p>
+        <label>Anstellung</label>
+        <p>{{ l.anstellungsverhaeltnis }}</p>
+        <label>Deputat</label>
+        <p>{{ l.deputatsstunden }}</p>
+        <label>Fächer</label>
+        <p>{{ l.faecher.map(f => f.name).join(', ') }}</p>
+        <label>Bevorzugte Klassen</label>
+        @if (l.praeferenzen && l.praeferenzen.length > 0) {
+        <p>
+          {{ l.praeferenzen.map(p => p.bezeichnung + ' (Jgst. ' +
+          p.jahrgangsnummer + ')').join(', ') }}
+        </p>
+        } @else {
+        <p>Keine Präferenzen angegeben</p>
+        }
+
+        <label>Klassenleitung</label>
+        @if (l.lerngruppe) {
+        <p>
+          {{ l.lerngruppe.bezeichnung }} (Jahrgang {{
+          l.lerngruppe.jahrgangsstufe }}, Raum {{ l.lerngruppe.klassenzimmer }})
+        </p>
+        } @else {
+        <p>Keine Klassenleitung</p>
+        }
+
+        <label>Bevorzugte Stunden</label>
+        @for (v of verfuegbarkeitNachTypFuer(l, verfTyp.BEVORZUGT); track
+        v.zeitslotId) {
+        <div class="verf-eintrag bevorzugt">
+          {{ v.wochentag }}, {{ v.zeitslotId === null ? 'Ganztägig' :
+          v.zeitslotId + '. Zeitslot' }}, {{ v.startdatum | date:'dd.MM.yyyy' }}
+          – {{ v.enddatum | date:'dd.MM.yyyy' }}
+        </div>
+        }
+
+        <label>Nicht bevorzugte Stunden</label>
+        @for (v of verfuegbarkeitNachTypFuer(l, verfTyp.NICHT_BEVORZUGT); track
+        v.zeitslotId) {
+        <div class="verf-eintrag nichtBevorzugt">
+          {{ v.wochentag }}, {{ v.zeitslotId === null ? 'Ganztägig' :
+          v.zeitslotId + '. Zeitslot' }}, {{ v.startdatum | date:'dd.MM.yyyy' }}
+          – {{ v.enddatum | date:'dd.MM.yyyy' }}
+        </div>
+        }
+
+        <label>Gesperrte Stunden</label>
+        @for (v of verfuegbarkeitNachTypFuer(l, verfTyp.GESPERRT); track
+        v.zeitslotId) {
+        <div class="verf-eintrag gesperrt">
+          {{ v.wochentag }}, {{ v.zeitslotId === null ? 'Ganztägig' :
+          v.zeitslotId + '. Zeitslot' }}, {{ v.startdatum | date:'dd.MM.yyyy' }}
+          – {{ v.enddatum | date:'dd.MM.yyyy' }}
+        </div>
+        }
+      </div>
+    </ion-accordion>
+    }
+  </ion-accordion-group>
+</ion-content>

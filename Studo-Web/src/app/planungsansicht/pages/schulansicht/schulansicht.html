@@ -1,0 +1,315 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Schulansicht</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!--Überschrift-->
+<ion-content class="ion-padding">
+  <h1>Schulansicht</h1>
+  <p>
+    Alle Stundenpläne der angelegten Klassen, Räume und Lehrkräfte sind unter
+    den jeweiligen Filtern zu erreichen. Archivierte Stundenpläne sind ebenfalls
+    einsehbar
+  </p>
+
+  <!--Schuljahreswechsle-->
+  <button class="jahreswechsel" id="present-alert">Schuljahreswechsel</button>
+  <ion-alert
+    trigger="present-alert"
+    header="Achtung!"
+    message="Mit dem Klicken dieses Buttons wird der Schuljahreswechsel
+      durchgeführt: Alle 10. Klassen werden archiviert und alle anderen Klassen
+      werden hochgestuft."
+    [buttons]="alertButtons"
+    (didDismiss)="setResult($event)"
+  ></ion-alert>
+
+  <!--Filterliste-->
+  <div class="filter-aktion-leiste">
+    <div class="filter-chips">
+      <button class="filter-chip" (click)="filterSetzen('klassen')">
+        Klassen
+      </button>
+      <button class="filter-chip" (click)="filterSetzen('lehrkraefte')">
+        Lehrkräfte
+      </button>
+      <button class="filter-chip" (click)="filterSetzen('raeume')">
+        Räume
+      </button>
+      <button class="filter-chip" (click)="filterSetzen('archiv')">
+        Archiv
+      </button>
+    </div>
+  </div>
+
+  <!--Schuljahr-->
+  <h4>Schuljahr</h4>
+  @if (schuljahr()) {
+  <p>{{ schuljahr() }}</p>
+  } @else {
+  <p>Schuljahr konnte nicht geladen werden</p>
+  }
+
+  <!--Einzelne Klassen anzeigen lassen-->
+  @if (aktiverFilter() === 'klassen') {
+  <div class="auswahl-bereich">
+    <h2>Klasse auswählen</h2>
+
+    <ion-accordion-group>
+      @for (lerngruppe of lerngruppen(); track lerngruppe.id) {
+      <ion-accordion
+        [value]="'klasse-' + lerngruppe.id"
+        (click)="klasseAuswaehlen(lerngruppe)"
+      >
+        <ion-item slot="header"> {{ lerngruppe.bezeichnung }} </ion-item>
+        <div slot="content">
+          <!--Stundenplan der Klasse-->
+          <div class="stundenplan-container">
+            <table class="stundenplan">
+              <thead>
+                <tr>
+                  <th class="stunden-spalte">Std.</th>
+                  @for ( tag of wochentage; track tag ) {
+                  <th>{{ wochentagAnzeigen(tag) }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for ( zeitslot of zeitslots(); track zeitslot.id ) {
+                <tr>
+                  <th class="stunden-info">
+                    <strong> {{ zeitslot.stundennummer }} </strong>
+                    <small>
+                      {{ zeitslot.start.substring(0, 5) }} – {{
+                      zeitslot.ende.substring(0, 5) }}
+                    </small>
+                  </th>
+                  @for ( tag of wochentage; track tag ) {
+                  <td>
+                    @let stunde = stundeFinden( tag, zeitslot.stundennummer );
+                    @if (stunde) {
+                    <div class="unterricht">
+                      <strong> {{ stunde.fachName }} </strong>
+                      <span>
+                        @if ( aktiverFilter() === 'klassen' ) { {{
+                        stunde.lehrkraftKuerzel }} · {{ stunde.raumBezeichnung
+                        }} } @if ( aktiverFilter() === 'lehrkraefte' ) { {{
+                        stunde.lerngruppenKuerzel }} · {{ stunde.raumBezeichnung
+                        }} }
+                      </span>
+                    </div>
+                    } @else {
+                    <span class="frei"> — Frei — </span>
+                    }
+                  </td>
+                  }
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ion-accordion>
+      }
+    </ion-accordion-group>
+  </div>
+  }
+
+  <!--Einzelne Lehrkräfte auswählen-->
+  @if (aktiverFilter() === 'lehrkraefte') {
+  <div class="auswahl-bereich">
+    <h2>Lehrkraft auswählen</h2>
+
+    <ion-accordion-group>
+      @for ( lehrkraft of lehrkraefte(); track lehrkraft.id ) {
+      <ion-accordion
+        [value]="'lehrkraft' + lehrkraft.id"
+        (click)="lehrkraftAuswaehlen(lehrkraft)"
+      >
+        <ion-item slot="header">
+          {{ lehrkraft.vorname }} {{ lehrkraft.nachname }} ({{ lehrkraft.kuerzel
+          }})
+        </ion-item>
+        <div slot="content">
+          <!--Stundenplan der Lehrkraft-->
+          <div class="stundenplan-container">
+            <table class="stundenplan">
+              <thead>
+                <tr>
+                  <th class="stunden-spalte">Std.</th>
+                  @for ( tag of wochentage; track tag ) {
+                  <th>{{ wochentagAnzeigen(tag) }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for ( zeitslot of zeitslots(); track zeitslot.id ) {
+                <tr>
+                  <th class="stunden-info">
+                    <strong> {{ zeitslot.stundennummer }} </strong>
+                    <small>
+                      {{ zeitslot.start.substring(0, 5) }} – {{
+                      zeitslot.ende.substring(0, 5) }}
+                    </small>
+                  </th>
+                  @for ( tag of wochentage; track tag ) {
+                  <td>
+                    @let stunde = stundeFinden( tag, zeitslot.stundennummer );
+                    @if (stunde) {
+                    <div class="unterricht">
+                      <strong> {{ stunde.fachName }} </strong>
+                      <span>
+                        @if ( aktiverFilter() === 'klassen' ) { {{
+                        stunde.lehrkraftKuerzel }} · {{ stunde.raumBezeichnung
+                        }} } @if ( aktiverFilter() === 'lehrkraefte' ) { {{
+                        stunde.lerngruppenKuerzel }} · {{ stunde.raumBezeichnung
+                        }} }
+                      </span>
+                    </div>
+                    } @else {
+                    <span class="frei"> — Frei — </span>
+                    }
+                  </td>
+                  }
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ion-accordion>
+      }
+    </ion-accordion-group>
+  </div>
+  }
+
+  <!--Einzelne Räume auswählen-->
+  @if (aktiverFilter() === 'raeume') {
+  <div class="auswahl-bereich">
+    <h2>Raum auswählen</h2>
+
+    <ion-accordion-group>
+      @for ( raum of raeume(); track raum.id ) {
+      <ion-accordion [value]="'raum-' + raum.id" (click)="raumAuswaehlen(raum)">
+        <ion-item slot="header"> {{ raum.bezeichnung }} </ion-item>
+        <div slot="content">
+          <!--Raumplan des jeweiligen Raums-->
+          <div class="stundenplan-container">
+            <table class="stundenplan">
+              <thead>
+                <tr>
+                  <th class="stunden-spalte">Std.</th>
+                  @for ( tag of wochentage; track tag ) {
+                  <th>{{ wochentagAnzeigen(tag) }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for ( zeitslot of zeitslots(); track zeitslot.id ) {
+                <tr>
+                  <th class="stunden-info">
+                    <strong> {{ zeitslot.stundennummer }} </strong>
+                    <small>
+                      {{ zeitslot.start.substring(0, 5) }} – {{
+                      zeitslot.ende.substring(0, 5) }}
+                    </small>
+                  </th>
+                  @for ( tag of wochentage; track tag ) {
+                  <td>
+                    @let stunde = raumbelegungFinden( tag,
+                    zeitslot.stundennummer ); @if (stunde) {
+                    <div class="unterricht">
+                      <strong> {{ stunde.fachName }} </strong>
+                      <span>
+                        {{ stunde.lerngruppenKuerzel }} · {{
+                        stunde.lehrkraftKuerzel }}
+                      </span>
+                    </div>
+                    } @else {
+                    <span class="frei"> — Frei — </span>
+                    }
+                  </td>
+                  }
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ion-accordion>
+      }
+    </ion-accordion-group>
+  </div>
+  }
+
+  <!--Archivierte Stundenpläne anzeigen-->
+  @if (aktiverFilter() === 'archiv') {
+  <div class="archiv-container">
+    @if (schulansichtService.archiv().length === 0) {
+    <p>Keine deaktivierten Pläne vorhanden</p>
+    }
+    <!--Wenn es Stundenpläne gibt:-->
+    @else {
+    <ion-accordion-group>
+      @for (archiv of schulansichtService.archiv(); track archiv.gueltigStart +
+      archiv.lerngruppeBezeichnung) {
+      <ion-accordion
+        [value]="'archiv-klasse-' + archiv.lerngruppeBezeichnung + archiv.gueltigStart"
+      >
+        <!--Klassenbezeichnung inklusive Halbjahr etc.-->
+        <ion-item slot="header">
+          {{ archiv.lerngruppeBezeichnung }} ({{ archiv.schuljahr }}, {{
+          archiv.halbjahr }}. Halbjahr)
+        </ion-item>
+        <div slot="content">
+          <!--Stundenplan anzeigen-->
+          <div class="stundenplan-container">
+            <table class="stundenplan">
+              <thead>
+                <tr>
+                  <th class="stunden-spalte">Std.</th>
+                  @for (tag of wochentage; track tag) {
+                  <th>{{ wochentagAnzeigen(tag) }}</th>
+                  }
+                </tr>
+              </thead>
+              <tbody>
+                @for (zeitslot of zeitslots(); track zeitslot.id) {
+                <tr>
+                  <th class="stunden-info">
+                    <strong>{{ zeitslot.stundennummer }}</strong>
+                    <small>
+                      {{ zeitslot.start.substring(0, 5) }} – {{
+                      zeitslot.ende.substring(0, 5) }}
+                    </small>
+                  </th>
+                  @for (tag of wochentage; track tag) {
+                  <td>
+                    @let stunde = archivStundeFinden(archiv, tag,
+                    zeitslot.stundennummer); @if (stunde) {
+                    <div class="unterricht">
+                      <strong>{{ stunde.fachName }}</strong>
+                      <span
+                        >{{ stunde.lehrkraftKuerzel }} · {{
+                        stunde.raumBezeichnung }}</span
+                      >
+                    </div>
+                    } @else {
+                    <span class="frei">— Frei —</span>
+                    }
+                  </td>
+                  }
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ion-accordion>
+      }
+    </ion-accordion-group>
+    }
+  </div>
+  }
+</ion-content>

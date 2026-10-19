@@ -1,0 +1,133 @@
+h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--ion-text-color);
+  margin-bottom: 4px;
+}
+
+p {
+    color: #676d71;
+}
+
+ion-button {
+    --background: #52796F;
+    --background-hover: #2f3e46;
+    --background-activated: #52796f;
+    --color: #ffffff;
+}
+
+ion-button[fill="outline"] {
+    --border-color: #000406;
+    --background: #2F3E46;
+    --color: #ffffff;
+}
+
+.varianten-anzeige {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.varianten-auswahl {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+}
+
+.veroeffentlichen-block {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 8px;
+}
+
+.kopfzeile {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.initstundenplan-header {
+    display: flex; 
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.fortschritt {
+    padding: 8px 16px;
+    color: var(--ion-color-medium);
+    font-size: 0.9rem;
+}
+
+.klassen-liste, .klasse-inhalt {
+    padding-left: 16px;
+}
+
+.plan-block {
+    padding: 12px 8px;
+    border-bottom: 1px solid var(--ion-color-light-shade);
+}
+
+.stundenplan-grid {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 8px;
+    font-size: 0.85rem;
+}
+
+.stundenplan-grid th, .stundenplan-grid td {
+    border: 1px solid var(--ion-color-light-shade);
+    text-align: left;
+    vertical-align: top;
+    padding: 4px;
+}
+
+.stundenplan-grid th {
+    background: var(--ion-color-light);
+    text-align: center;
+    font-weight: 600;
+}
+
+.std-nr {
+    width: 32px;
+    text-align: center;
+    font-weight: 600;
+    color: var(--ion-color-medium);
+}
+
+.stunde-zelle {
+    min-height: 40px;
+    padding: 2px 4px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.stunde-zelle:hover {
+    background: var(--ion-color-light);
+}
+
+.stunde-zelle .fach {
+    font-weight: 600;
+}
+
+.stunde-zelle .details {
+    font-size: 0.75rem;
+    color: var(--ion-color-medium);
+}
+
+.stunde-zelle.freistunde {
+    cursor: default;
+    color: var(--ion-color-medium);
+    text-align: center;
+}
+
+.stunde-zelle.geaendert {
+    background: var(--ion-color-warning-tint);
+}
+
+.edit-popover-content {
+    --width: 320px;
+    padding: 8px;
+}

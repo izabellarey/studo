@@ -1,0 +1,51 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Änderungen</ion-title>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content class="ion-padding">
+  <h1>Änderungen</h1>
+  <p>Vertretungen, Ausfälle und Raumänderungen, die dich betreffen</p>
+ 
+ 
+  <div class="filter-chips">
+    <ion-button class="filter-chip" [class.aktiv]="aktiverFilter() === 'alle'" (click)="filterSetzen('alle')">Alle</ion-button>
+    <ion-button class="filter-chip" [class.aktiv]="aktiverFilter() === 'offen'" (click)="filterSetzen('offen')">Offen ({{ lehrerService.anzahlOffen() }})</ion-button>
+    <ion-button class="filter-chip" [class.aktiv]="aktiverFilter() === 'abgeschlossen'" (click)="filterSetzen('abgeschlossen')">Abgeschlossen</ion-button>
+  </div>
+ 
+ 
+  <table class="aenderungen-tabelle">
+    <thead>
+      <tr>
+        <th>Typ</th>
+        <th>Titel</th>
+        <th>Beschreibung</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+ 
+    <tbody>
+      @for (a of gefilterteListe(); track a.id) {
+        <tr [class.offen]="a.offen">
+          <td><span class="typ-chip">{{ typNamen[a.typ] ?? a.typ }}</span></td>
+          <td><strong>{{ a.titel }}</strong></td>
+          <td class="beschreibung">{{ a.beschreibung }}</td>
+          <td>
+            @if (a.offen) {
+              <span class="status offen">Offen</span>
+            } @else {
+              <span class="status">Abgeschlossen</span>
+            }
+          </td>
+        </tr>
+      } @empty {
+        <tr>
+          <td colspan="4" class="leer">Keine Änderungen vorhanden.</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+ 
+</ion-content>

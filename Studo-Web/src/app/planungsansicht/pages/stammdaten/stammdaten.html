@@ -1,0 +1,65 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Stammdaten</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!--Überschrift-->
+<ion-content class="ion-padding">
+  <h1>Stammdaten Konfiguration</h1>
+  <p>
+    Bundesland und Schulform festlegen. Durch die Festlegung und anschließende
+    Speicherung der Daten werden die Bundesland und Schulform spezifischen
+    Regelungen zu den maximalen Stunden pro Tag / Woche, Pauselnregelungen,
+    Blockungen und Pflichtfächern übernommen.
+  </p>
+
+  <!--Schulprofil Konfigurieren-->
+  <div class="schulprofil">
+    <h3>Schulprofil</h3>
+    <div class="layout">
+      <!--Bundesland einstellen-->
+      <div class="form">
+        <label>Bundesland</label>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="Bundesland auswählen"
+            [(ngModel)]="bundesland"
+          >
+            @for (bl of bundeslaender; track bl) {
+            <ion-select-option [value]="bl">{{ bl }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <!--Schulform konfigurieren-->
+      <div class="form">
+        <label>Schulform</label>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="Schulform auswählen"
+            [(ngModel)]="schulform"
+          >
+            @for (sf of schulformen; track sf) {
+            <ion-select-option [value]="sf">{{ sf }}</ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+      </div>
+    </div>
+
+    <label>Schulname</label>
+    <ion-input
+      fill="outline"
+      placeholder="Schulnamen eingeben"
+      [(ngModel)]="name"
+    ></ion-input>
+
+    <button class="speichern" (click)="speichern()">
+      Änderungen übernehmen
+    </button>
+  </div>
+</ion-content>

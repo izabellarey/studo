@@ -1,0 +1,161 @@
+h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--ion-text-color);
+}
+
+p {
+    color: #676d71
+}
+
+.schueler-header {
+    display: flex; 
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+ion-button {
+    --background: #52796F;
+    --background-hover: #2f3e46;
+    --background-activated: #52796f;
+    --color: #ffffff;
+}
+
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.buttons ion-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  margin:0;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+
+.popup.active {
+  display: flex;
+}
+
+.popup-content {
+  background: white;
+  color: black;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+@media (prefers-color-scheme: dark) {
+  .popup-content {
+    background: #1e1e1e;
+    color: white;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .popup-content ion-input {
+    --color: white;
+    --placeholder-color: #aaaaaa;
+    --background: #2a2a2a;
+  }
+}
+
+.popup-content .close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.anlegen, .speichern {
+  background: #4a7a6f;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.anlegen:hover, .speichern:hover {
+  opacity: 0.9;
+}
+
+.speichern {
+  margin-top: 16px;
+  width: 100%;
+  justify-content: center;
+}
+
+.schueler-tabelle {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+
+.schueler-tabelle th {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  background: #52796F;
+  color: #ffffff
+}
+
+.schueler-tabelle td {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.filter-aktion-leiste {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.filter-chips {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-chip {
+  --border-radius: 20px;
+  --background:#cad2c5;
+  text-transform: none;
+}
+
+.filter-chip.aktiv {
+    --background: #52796F;
+    --background-hover: #2f3e46;
+    --background-activated: #52796F;
+    --color: #ffffff;
+}

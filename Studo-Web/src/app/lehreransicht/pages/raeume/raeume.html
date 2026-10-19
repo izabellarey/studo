@@ -1,0 +1,88 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Räume</ion-title>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content class="ion-padding">
+  <h1>Räume</h1>
+  <p>Alle Räume der Schule und wann sie belegt sind</p>
+ 
+ 
+ 
+  <div class="popup" [class.active]="popupIsOpen">
+    <div class="popup-content breit">
+      <h3>Belegung {{ ausgewaehlterRaum?.bezeichnung }}</h3>
+ 
+      <button class="close" (click)="popupSchliessen()">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+ 
+      @if (raumplan().length === 0) {
+        <p>In diesem Raum ist diese Woche kein Unterricht eingeplant.</p>
+      }
+
+      <table class="plan-tabelle">
+        <thead>
+          <tr>
+            <th>Stunde</th>
+            @for (tag of wochentage; track tag.key) {
+              <th>{{ tag.name }}</th>
+            }
+          </tr>
+        </thead>
+ 
+        <tbody>
+          @for (slot of zeitslots(); track slot.stundennummer) {
+            <tr>
+              <td class="zeit">
+                <strong>{{ slot.stundennummer }}.</strong>
+                <span>{{ slot.start.slice(0, 5) }} - {{ slot.ende.slice(0, 5) }}</span>
+              </td>
+ 
+              @for (tag of wochentage; track tag.key) {
+                <td>
+                  @if (stundeFinden(tag.key, slot.stundennummer); as s) {
+                    <div class="stunde" [class.geaendert]="s.geaendert">
+                      <strong>{{ s.fachName }}</strong>
+                      <span>{{ s.lerngruppeKuerzel }} | {{ s.lehrkraftKuerzel }}</span>
+                    </div>
+                  }
+                </td>
+              }
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+ 
+ 
+ 
+  <table class="raeume-tabelle">
+    <thead>
+      <tr>
+        <th>Raum</th>
+        <th>Art</th>
+        <th>Kapazität</th>
+        <th>Aktion</th>
+      </tr>
+    </thead>
+ 
+    <tbody>
+      @for (r of raumListe(); track r.id) {
+        <tr>
+          <td>{{ r.bezeichnung }}</td>
+          <td>{{ r.art | titlecase }}</td>
+          <td>{{ r.kapazitaet }} Plätze</td>
+          <td class="buttons">
+            <ion-button fill="clear" color="dark" (click)="raumplanOeffnen(r)" title="Raumplan anzeigen">
+              <ion-icon name="calendar-outline"></ion-icon>
+            </ion-button>
+          </td>
+        </tr>
+      }
+    </tbody>
+  </table>
+ 
+</ion-content>

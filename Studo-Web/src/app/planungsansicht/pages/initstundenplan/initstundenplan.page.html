@@ -1,0 +1,169 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Initiale Stundenpläne</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h1>Initiale Stundenpläne</h1>
+  <p>Primäre Stundenpläne für den Anfang jedes Schul-/Halbjahres</p>
+   <ion-button [disabled]="generierungLaeuft()" (click)="stundenplaeneGenerieren()">
+      Stundenpläne generieren
+   </ion-button>
+    <div class="veroeffentlichen-block">
+      <ion-button [disabled]="!varianteGewaehlt()" (click)="veroeffentlichen()">
+        Finale Stundenpläne veröffentlichen
+      </ion-button>
+      <div class="varianten-auswahl">      
+      @for (v of varianten; track v) {
+        <ion-button [fill]="gewaehlteVariante() === v ? 'solid' : 'outline'" (click)="varianteWaehlen(v)">
+          Variante {{v}}
+        </ion-button>
+      }
+      </div>
+    </div>
+  
+  
+
+ <!-- Klassenstufen 5-10 -->
+  <ion-accordion-group>
+    @for (stufe of jahrgangsstufenNummern(); track stufe) {
+    <ion-accordion [value]="'stufe-' + stufe">
+      <ion-item slot="header">
+        <ion-label>Klassenstufe {{ stufe }}</ion-label>
+      </ion-item>
+
+      <div slot="content" class="klassen-liste">
+        <!-- Klasse der Stufen -->
+         <ion-accordion-group>
+          @for (klasse of klassenFuer(stufe); track klasse.id) {
+            <ion-accordion [value]="'klasse-' + klasse.id">
+              <ion-item slot="header" (click)="onKlasseGeoeffnet(klasse)">
+                <ion-label>{{ klasse.bezeichnung }}</ion-label>
+            </ion-item>
+
+            <div slot="content" class="klasse-inhalt">
+              <ion-accordion-group>
+                <!-- Stundenplan -->
+                 <ion-accordion value="stundenplan">
+                  <ion-item slot="header">
+                    <ion-label>Stundenplan</ion-label>
+                  </ion-item>
+                  
+                    <div slot="content" class="plan-block">
+                      <div class="varianten-anzeige">
+                        @for (v of varianten; track v) {
+                          <ion-button [fill]="angezeigteVarianteProKlasse().get(klasse.id) === v ? 'solid' : 'outline'" (click)="varianteAnzeigen(klasse, v)">
+                            Variante {{v}}
+                          </ion-button>
+                        }
+                      </div>
+                      @if (angezeigterPlan(klasse); as plan) {
+                        <ng-container *ngTemplateOutlet="stundenplanGrid; context: {plan: plan, klasse: klasse}"></ng-container>
+                      }
+                    </div>
+                 </ion-accordion>
+              </ion-accordion-group>
+            </div>
+          </ion-accordion>
+        }
+         </ion-accordion-group>
+      </div>
+    </ion-accordion> 
+  } 
+  </ion-accordion-group> 
+
+  <!-- Wiederverwendbares Grid für Stundenplan-Vorschlag -->
+  <ng-template #stundenplanGrid let-plan="plan" let-klasse="klasse">
+    <table class="stundenplan-grid">
+      <thead>
+        <tr>
+          <th>Std.</th>
+          @for (tag of wochentage; track tag) {
+           <th>{{ tag }}</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (nummer of stundenProTag; track nummer) {
+        <tr>
+          <td class="std-nr">{{ nummer }}</td>
+          @for (tag of wochentage; track tag ) {
+          <td>
+            @if (stundeAn(plan, tag, nummer); as stunde) {
+              <div
+                class="stunde-zelle"
+                [class.freistunde]="stunde.freistunde"
+                [class.geaendert]="stunde.geaendert"
+                (click)="stundeBearbeiten($event, klasse.id, stunde)"
+              >
+                @if (!stunde.freistunde) {
+                  <div class="fach">{{ stunde.fachName }}</div>  
+                  <div class="details">{{ stunde.lehrkraftKuerzel }} · {{ stunde.raumBezeichnung }}</div>
+                } @else {
+                    <div class="details"></div>                  
+                }
+              </div>
+            }
+          </td>
+        }
+        </tr>
+      }
+      </tbody>
+    </table>
+  </ng-template>
+
+  <!-- Popover für Bearbeitung der einzelnen Stunden -->
+  <ion-popover [isOpen]="editPopoverOpen()" [event]="editEvent()" (didDismiss)="editPopoverOpen.set(false)">
+    <ng-template>
+      @if (editKontext(); as kontext) {
+      <ion-content class="edit-popover-content">
+        <ion-list>
+          <ion-item lines="none">
+            <ion-label>
+              <h2> {{ kontext.stunde.fachName }}</h2>
+              <p> {{ kontext.stunde.wochentag }}, Stunde {{ kontext.stunde.stundennummer }}</p>
+            </ion-label>
+          </ion-item>
+
+          @if (editVorschlag(); as vorschlag) {
+            <ion-item>
+              <ion-label>Lehrkraft</ion-label>
+              <ion-select
+                interface="popover"
+                placeholder="Lehrkraft wählen"
+                [ngModel]="editGewaehlteLehrkraftId()"
+                (ngModelChange)="editGewaehlteLehrkraftId.set($event)"
+              >
+              @for (lehrkraft of vorschlag.lehrkraftalternativen; track lehrkraft.lehrkraftId) {
+                <ion-select-option [value]="lehrkraft.lehrkraftId">{{ lehrkraft.vorname }} {{ lehrkraft.nachname }}</ion-select-option>  
+              }
+              </ion-select>
+            </ion-item>
+          
+            <ion-item>
+              <ion-label>Raum</ion-label>
+              <ion-select
+                interface="popover"
+                placeholder="Raum wählen"
+                [ngModel]="editGewaehlterRaumId()"
+                (ngModelChange)="editGewaehlterRaumId.set($event)"
+              >
+                @for (raum of vorschlag.raumalternativen; track raum.raumId) {
+                  <ion-select-option [value]="raum.raumId">{{raum.bezeichnung}}</ion-select-option>
+                }  
+            </ion-select>
+            </ion-item>
+          } @else {
+            <ion-item lines="none">
+              <ion-label>Lade Alternativen ...</ion-label>
+            </ion-item>
+          }
+        </ion-list>
+
+        <ion-button expand="block" (click)="aenderungSpeichern()">Speichern</ion-button>
+      </ion-content>
+    }
+    </ng-template>
+  </ion-popover>
+</ion-content>

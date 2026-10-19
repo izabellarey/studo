@@ -1,0 +1,55 @@
+# Build
+build/
+out/
+.gradle/
+*.class
+
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+
+# NetBeans
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+# Android
+android/local.properties
+android/.cxx/
+*.aab
+
+# Die Abgabe-APK gehört bewusst ins Repo (git lfs ist untersagt),
+# deshalb ist *.apk hier NICHT eingetragen.
+
+# Umgebung
+.env
+application-local.yml
+
+# Logs und temporäre Dateien
+*.log
+*.tmp
+
+# Betriebssystem
+.DS_Store
+Thumbs.db
+
+# Node / Frontend
+node_modules/
+dist/
+.vite/
+npm-debug.log*
+
+backend/data/

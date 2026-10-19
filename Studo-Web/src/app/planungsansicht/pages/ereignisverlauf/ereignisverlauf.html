@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Ereignisverlauf</ion-title>
+  </ion-toolbar>
+</ion-header>
+ 
+<ion-content class="ion-padding">
+  <h1>Ereignisverlauf</h1>
+  <p>Alle im Dashboard eingetragenen Ereignisse, neueste zuerst</p>
+ 
+ 
+<!------------------------------------ Tabelle Ereignisse ---------------------------------------->
+ 
+ 
+  <table class="ereignis-tabelle">
+    <thead>
+      <tr>
+        <th>Eingetragen am</th>
+        <th>Typ</th>
+        <th>Datum</th>
+        <th>Stunden</th>
+        <th>Betroffen</th>
+        <th>Grund</th>
+      </tr>
+    </thead>
+ 
+ 
+    <!--------------------------- Daten aus Datenbank ziehen -------------------------------->
+ 
+ 
+    <tbody>
+      @for (e of zeilen(); track e.id) {
+        <tr>
+          <td class="zeit">{{ e.eingetragen }}</td>
+          <td><span [class]="'badge ' + e.badge">{{ e.typText }}</span></td>
+          <td>{{ e.datum }}</td>
+          <td>{{ e.stunden }}</td>
+          <td class="betroffen">{{ e.betroffen }}</td>
+          <td>{{ e.grund }}</td>
+        </tr>
+      }
+    </tbody>
+  </table>
+</ion-content>

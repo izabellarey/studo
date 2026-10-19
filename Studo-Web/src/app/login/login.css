@@ -1,0 +1,140 @@
+:host {
+    --studo-primary: #52796F;
+    --studo-bg: #eef1f6;
+    --studo-text-muted: #6b7280;
+    --studo-border: #e5e7eb;
+    --studo-input-bg: #f9fafb;
+}
+
+ion-button {
+    --background: #52796F;
+    --background-hover: #2f3e46;
+    --background-activated: #52796f;
+    --color: #ffffff;
+}
+
+.login-content {
+    --background: var(--studo-bg);
+}
+
+.login-wrapper {
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+}
+
+.login-card {
+    width: 100%;
+    max-width: 420px;
+    background: #ffffff;
+    border-radius: 20px;
+    box-shadow: 0 10px 30 px rgba(0, 0, 0, 0.06);
+    padding: 40px 36px 28px;
+    text-align: center;
+}
+
+.login-logo {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-logo img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.login-title {
+    margin: 0 0 4px;
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+}
+
+.login-subtitle {
+    margin: 0 0 28px;
+    font-size: 14px;
+    color: var(--studo-text-muted);
+}
+
+.login-form {
+    text-align: left;
+}
+
+.login-field {
+    margin-bottom: 18px;
+}
+
+.login-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 6px;
+}
+
+.login-input-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--studo-input-bg);
+    border: 1px solid var(--studo-border);
+    border-radius: 10px;
+    padding: 10px 12px;
+}
+
+.login-input-wrapper ion-icon {
+    font-size: 18px;
+    color: var(--studo-text-muted);
+    flex-shrink: 0;
+}
+
+.login-input-wrapper input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    color: #111827;
+    font-family: inherit;
+}
+
+.login-input-wrapper &::placeholder {
+    color: #9ca3af;
+}
+
+.login-toggle-visibility {
+    cursor: pointer;
+}
+
+.login-error {
+    margin: 6px 0 0;
+    font-size: 12px;
+    color: #52796F;
+}
+
+.login-submit {
+    --background: var(var(--studo-primary));
+    --border-radius: 10px;
+    --box-shadow: none;
+    font-weight: 600;
+    margin: 4px 0 20px;
+}
+
+.login-footer-divider {
+    border-top: 1px solid var(--studo-border);
+    margin-bottom: 16px;
+}
+
+.login-footer {
+    margin: 0;
+    font-size: 12px;
+    color: var(--studo-text-muted);
+}

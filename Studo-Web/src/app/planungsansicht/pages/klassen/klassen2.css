@@ -1,0 +1,92 @@
+p {
+  line-height: 1.6;
+}
+
+/* Überschriftenzeile */
+.b_right {
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;            
+}
+
+.b_right h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+
+.klassen2_p {
+  color: var(--ion-color-step-600, #808080);
+  margin-top: 4px;
+  margin-bottom: 24px;
+}
+
+.b1_rcolor {
+  --background: #52796F;
+  --color: white;
+  border: none;
+}
+
+/* Gleiche Card-Größe wie auf der Klassenstufen-Übersicht */
+.card-height {
+  height: 170px !important; 
+  background-color:   #354F52;
+  box-shadow: 5px 5px 5px gray;
+  padding-left: 15px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  flex: 1;
+}
+
+.klassen-card {
+  cursor: pointer;
+}
+
+ion-card-title {
+  color: #ffffff;
+}
+
+ion-card-title b {
+  font-size: 1.5em;
+}
+
+ion-card-content {
+  color: #ffffff;
+}
+
+/* Kopfzeile der Card (ausrichtung) */
+.klasse-card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Bearbeiten(wurde zu Deaktivieren)Button ausrichtung */
+.klasse-bearbeiten-btn {
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  --padding-start: 0;
+  --padding-end: 0;
+}
+
+/* Stundenplan-Link */
+.stundenplan-link {
+  display: block;
+  margin-top: 10px;
+  color: #84A98C;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.stundenplan-link:hover {
+  text-decoration: underline;
+}
+
+/* Modal: Klasse anlegen */
+.modal-form ion-item {
+  margin-bottom: 8px;
+}

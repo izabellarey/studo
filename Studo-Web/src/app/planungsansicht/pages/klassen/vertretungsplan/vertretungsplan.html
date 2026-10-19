@@ -1,0 +1,159 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Aktueller Stundenplan</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!--Überschrift-->
+<ion-content>
+  <h1>Aktueller Stundenplan</h1>
+  <p>
+    Der hier angezeigte Stundenplan beinhaltet alle Änderungen der jetzigen
+    Woche für die ausgewählte Klasse.
+  </p>
+
+  <!--Fall dass noch nix angelegt ist, gib den Text aus-->
+  @if (eintraege().length === 0) {
+  <p>Für diese Klasse liegt noch kein Stundenplan vor.</p>
+  } @else {
+
+  <!--Stundenplanraster-->
+  <table class="stundenplan">
+    <thead>
+      <tr>
+        <th class="stunden-spalte">Std.</th>
+        @for (tag of wochentage; track tag) {
+        <th>{{ wochentagAnzeigen(tag) }}</th>
+        }
+      </tr>
+    </thead>
+    <tbody>
+      @for (zeitslot of stundenplanService.alleZeitslots(); track zeitslot.id) {
+      <tr>
+        <!--Zeitslots-->
+        <th class="stunden-info">
+          <p>{{ zeitslot.stundennummer }}</p>
+          <small>
+            {{ zeitslot.start.substring(0, 5) }} – {{ zeitslot.ende.substring(0,
+            5) }}
+          </small>
+        </th>
+        <!--Unterrichtsstunden mit Änderungen und Ohne-->
+        @for (tag of wochentage; track tag) { @let stunde = stundeFinden( tag,
+        zeitslot.stundennummer );
+        <td>
+          @if (stunde) { @let konfig = checkAenderungKonfig(stunde);
+          <div
+            class="unterrichtsstunde"
+            [class.hervorgehoben]="stunde.geaendert || stunde.freistunde"
+            [class.klickbar]="stunde.offeneAenderung && !stunde.freistunde"
+            [class.typ-ausfall]="stunde.grund === 'AUSFALL'"
+            [class.vertretung-aktiv]="stunde.geaendert && !stunde.offeneAenderung"
+            [class.typ-raumaenderung]="stunde.grund === 'RAUMAENDERUNG'"
+            [class.typ-zusatzstunde]="stunde.grund === 'ZUSATZSTUNDE'"
+            (click)="bearbeitbar(stunde) && !stunde.freistunde && bearbeitungStarten(stunde)"
+          >
+            <strong>{{ stunde.fachName }}</strong><br />
+            <span
+              >{{ stunde.lehrkraftKuerzel }} · {{ stunde.raumBezeichnung
+              }}</span
+            >
+            <!--Ereignis Freistunde-->
+            @if (stunde.freistunde) {
+            <div class="ausfall">Ausfall</div>
+            }
+            <!--Ereignis Offene Änderungen-->
+            @else if (stunde.offeneAenderung) {
+
+            <div class="aenderungs-hinweis offen">
+              @switch (stunde.grund) { @case ('AUSFALL') { Offener Ausfall }
+              @case ('RAUMAENDERUNG') { Offene Raumänderung } @case
+              ('ZUSATZSTUNDE') { Offene Zusatzstunde } @default { Offene
+              Änderung } }
+            </div>
+            }
+
+            <!-- Änderung wurde bereits bestätigt -->
+            @else if (stunde.geaendert) {
+
+            <div class="aenderungs-hinweis vertretung-aktiv">
+              @switch (stunde.grund) { @case ('AUSFALL') { Vertretung aktiv }
+              @case ('RAUMAENDERUNG') { Raumänderung aktiv } @case
+              ('ZUSATZSTUNDE') { Zusatzstunde aktiv } @default { Änderung aktiv
+              } }
+            </div>
+            }
+          </div>
+
+          <!--Popup-->
+          @if (popupIsOpen && bearbeitenId === stunde.id && konfig) {
+          <div class="popup active">
+            <div class="popup-content">
+              <h3>{{ konfig.titel }}</h3>
+
+              <button class="close" (click)="bearbeitenAbbrechen()">
+                <ion-icon name="close-outline"></ion-icon>
+              </button>
+
+              <!--Lehrkraft Änderungen-->
+              @if (konfig.lehrerAenderbar) {
+              <label>Verfügbare Lehrkraft</label>
+              <ion-item>
+                <ion-select
+                  interface="popover"
+                  [(ngModel)]="bearbeiteteLehrkraft"
+                  [compareWith]="lehrkraftVergleichen"
+                  placeholder="Vertretungslehrkraft"
+                >
+                  @for (lehrkraft of verfuegbareLehrkraft(); track
+                  lehrkraft.lehrkraftId) {
+                  <ion-select-option [value]="lehrkraft"
+                    >{{ lehrkraft.vorname }} {{ lehrkraft.nachname }} @if
+                    (lehrkraft.fachlehrkraft) { (Fachlehrkraft) }
+                  </ion-select-option>
+                  }
+                </ion-select>
+              </ion-item>
+              }
+
+              <!--Raum Änderungen-->
+              @if (konfig.raumAenderbar) {
+              <label>Verfügbarer Raum</label>
+              <ion-item>
+                <ion-select
+                  interface="popover"
+                  [(ngModel)]="bearbeiteterRaum"
+                  [compareWith]="raumVergleichen"
+                  placeholder="Raum"
+                >
+                  @for (raum of verfuegbareRaeume(); track raum.raumId) {
+                  <ion-select-option [value]="raum"
+                    >{{ raum.bezeichnung }} @if (raum.fachraum)
+                    {(Fachraum)}</ion-select-option
+                  >
+                  }
+                </ion-select>
+              </ion-item>
+              }
+
+              <button class="button" (click)="speichern(stunde)">
+                Speichern
+              </button>
+              <button class="button" (click)="bearbeitenAbbrechen()">
+                Abbrechen
+              </button>
+            </div>
+          </div>
+          } }
+          <!--Wenn keine Unterrichtsstunde existiert-->
+          @else {
+          <span class="frei">— Frei —</span>
+          }
+        </td>
+        }
+      </tr>
+      }
+    </tbody>
+  </table>
+  }
+</ion-content>

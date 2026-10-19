@@ -1,0 +1,93 @@
+h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--ion-text-color);
+}
+ 
+p {
+    color: #676d71
+}
+
+.filter-chips {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0;
+}
+ 
+ion-button {
+    --background: #52796F;
+    --background-hover: #2f3e46;
+    --background-activated: #52796f;
+    --color: #ffffff;
+}
+ 
+.filter-chip {
+  --border-radius: 20px;
+  --background: #cad2c5;
+  --color: #2f3e46;
+  text-transform: none;
+}
+ 
+.filter-chip.aktiv {
+    --background: #52796F;
+    --background-hover: #2f3e46;
+    --background-activated: #52796F;
+    --color: #ffffff;
+}
+ 
+.aenderungen-tabelle {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+ 
+.aenderungen-tabelle th {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  background: #52796F;
+  color: #ffffff
+}
+ 
+.aenderungen-tabelle td {
+  padding: 10px 12px;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid #e3e6e4;
+}
+ 
+.aenderungen-tabelle tr.offen td {
+  background: #fdf1d6;
+}
+ 
+.beschreibung {
+  color: #676d71;
+  max-width: 500px;
+}
+ 
+.typ-chip {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 20px;
+  background: #cad2c5;
+  color: #2f3e46;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+ 
+.status {
+  font-size: 13px;
+  color: #676d71;
+}
+ 
+.status.offen {
+  font-weight: 700;
+  color: #dc2626;
+}
+ 
+.leer {
+  padding: 20px 12px !important;
+  color: #676d71;
+}

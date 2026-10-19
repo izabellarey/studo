@@ -1,0 +1,228 @@
+/*Überschrift*/
+h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+}
+
+/*Allgemeine Einstellungen*/
+.main-container ion-grid {
+  display: flex;
+  flex-direction: column;
+}
+
+/*Formatierung des allgemeinen Inhaltes der Zellen im Grid*/
+.vertretungspriorität {
+  border: 2px solid #52796F;
+  width: 100%;
+  height: fit-content;
+  align-items: center;
+  padding-top: 5px;
+  padding-left: 15px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  flex: 1;
+}
+
+.vertretungspriorität p {
+  color: #676d71;
+}
+
+.stundenregeln {
+  border: 2px solid #52796F;
+  width: 100%;
+  height: fit-content;
+  align-items: center;
+  padding-top: 5px;
+  padding-left: 15px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  flex: 1;
+}
+
+.pflichtfächer {
+  border: 2px solid #52796F;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  padding-top: 5px;
+  padding-left: 15px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  flex: 1;
+}
+
+.wahlfach {
+  border: 2px solid #52796F;
+  width: 100%;
+  height: fit-content;
+  align-items: center;
+  padding-top: 5px;
+  padding-left: 15px;
+  padding-bottom: 20px;
+  border-radius: 5px;
+  flex: 1;
+}
+
+.beschreibung {
+  color: #676d71;
+}
+
+/*Formatierung des Inhaltes der Zellen im Schulprofil*/
+ion-item {
+  --padding-start: 10px;
+  margin-bottom: 16px; 
+}
+
+label {
+  text-transform: uppercase;
+  color: grey;
+  font-weight: bold;
+  font-size: small;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.layout {
+  display: flex;
+  gap: 16px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  width: 225px;
+}
+
+ion-input {
+  width: 470px;
+  border-color: gray;
+  --highlight-color-focused: #52796F;
+}
+
+/*Formatierung des Inhaltes der Zellen im Vertretungspriorität*/
+ion-list {
+  width: 470px;
+}
+
+/*Formatierung der Pausenregelungen und Stundenraster*/
+.pausen-tabelle {
+  width: 95%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+.pausen-tabelle th {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  background: #52796F;
+  color: #ffffff
+}
+
+.pausen-tabelle td {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+/*Formatierung der Pflichtfächer und Stundenvorgabe*/
+.stunden-tabelle {
+  width: 95%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+.stunden-tabelle th {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  background: #52796F;
+  color: #ffffff
+}
+
+.stunden-tabelle td {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+/*Formatierung des Inhalts von Wahlfach / zusätzliche Fächer*/
+.liste {
+  width: 95%;
+}
+
+.einzelnesFach {
+  border: 2px solid #84A98C;
+  width: 95%;
+  border-radius: 10px;
+  margin-top: 10px;
+  padding-left: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.icon2 {
+  margin-left: auto;
+  padding-right: 10px;
+}
+
+/*Buttons*/
+.speichern {
+  background-color: #52796F;
+  color: #ffffff;
+  width: 94.5%;
+  border-radius: 10px;
+  align-items: center;
+  padding-left: 20px;
+  height: 50px;
+  font-size: 17px;
+  margin-top: 20px;
+}
+
+.speichern:hover {
+  background-color: #3f535d;
+}
+
+.speichern.active {
+  background-color: #354F52;
+  color: #ffffff;
+}
+
+/*Popup*/
+.popup {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup.active { 
+  display: flex;
+}
+
+.popup-content {
+  background: #CAD2C5;
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+/*Button zum Schließen des Popups*/
+.close {
+  background-color: #CAD2C5;
+  color: #354F52;
+  height: 30px;
+  width: 30px;
+  font-size: 17px;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  position: absolute;
+}

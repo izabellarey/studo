@@ -1,0 +1,324 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Dashboard</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!--Überschrift-->
+<ion-content class="ion-padding">
+  <h1>Planungs-Dashboard</h1>
+  <p>
+    Hier können Ereignisse angelegt und eingesehen werden. Zusätzlich wird man
+    hier weitergeleitet, um diese zu bearbeiten.
+  </p>
+
+  <!--"Tabs" mit den Weiterleitungen auf die Webseite zur Klassen und Raumansicht, sowie die Ereignisse-->
+  <div class="weiterleitungen">
+    <div class="klassenauswahl">
+      <h2 class="shortcut"><ion-icon name="book-outline"></ion-icon>Klassen</h2>
+      <p class="Test">
+        Klassenstufen & Stundenpläne verwalten, Vertretungsstunden einplanen und
+        Ausfälle melden.
+      </p>
+      <a routerLink="/planungsansicht/klassen" routerLinkActive="active"
+        >Zur Klassenansicht<ion-icon name="arrow-forward-outline"></ion-icon
+      ></a>
+    </div>
+
+    <div class="raumauswahl">
+      <h2 class="shortcut">
+        <ion-icon name="business-outline"></ion-icon>Räume
+      </h2>
+      <p>
+        Raumbelegung & Wochenpläne, freie Kapazitäten prüfen und Raumbuchungen
+        anordnen
+      </p>
+      <a routerLink="/planungsansicht/raeume" routerLinkActive="active"
+        >Zur Raumansicht<ion-icon name="arrow-forward-outline"></ion-icon
+      ></a>
+    </div>
+
+    <div class="ereignis">
+      <h2 class="shortcut">
+        <ion-icon name="calendar-clear-outline"></ion-icon>Ereignis
+      </h2>
+      <p>Ereignisse eintragen</p>
+      <span (click)="openPopup()"
+        >Ereignisse verwalten<ion-icon name="arrow-forward-outline"></ion-icon
+      ></span>
+    </div>
+  </div>
+
+  <!--Popup, in dem Ereignisse eingetragen werden können-->
+  <div class="popup" [class.active]="popupIsOpen">
+    <div class="popup-content">
+      <h3>Neues Ereignis eintragen</h3>
+      <button class="close" (click)="openPopup()">
+        <ion-icon name="close-outline"></ion-icon>
+      </button>
+
+      <!--Anlass eintragen-->
+      <div class="form">
+        <label>Anlass</label>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="Anlass auswählen"
+            [(ngModel)]="formData.typ"
+          >
+            <ion-select-option [value]="ereignisTyp.AUSFALL"
+              >Lehrer fällt aus</ion-select-option
+            >
+            <ion-select-option [value]="ereignisTyp.RAUMAENDERUNG"
+              >Raumänderung</ion-select-option
+            >
+            <ion-select-option [value]="ereignisTyp.ZUSATZSTUNDE"
+              >Zusatzstunde</ion-select-option
+            >
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <!--Lehrkraft auswählen, sofern der Anlass "Lehrer fällt aus" ausgewählt wird-->
+      @if (formData.typ === ereignisTyp.AUSFALL) {
+      <div class="form">
+        <label>Betroffene Lehrkraft</label>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="Lehrkraft auswählen"
+            [(ngModel)]="formData.lehrkraftId"
+          >
+            @for (l of lehrerListe(); track l.id) {
+            <ion-select-option [value]="l.id"
+              >{{ l.vorname }} {{ l.name }} ({{ l.kuerzel }})</ion-select-option
+            >
+            }
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="form">
+        <label>Grund</label>
+        <ion-item>
+          <ion-input
+            type="text"
+            placeholder="z.B. Krankheit"
+            [(ngModel)]="formData.grund"
+          >
+          </ion-input>
+        </ion-item>
+      </div>
+      }
+
+      <!--Das selbe, falls ein Raus ausfällt nur mit anderen Daten-->
+      @if (formData.typ === ereignisTyp.RAUMAENDERUNG) {
+      <div class="form">
+        <label>Betroffener Raum</label>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="Raum auswählen"
+            [(ngModel)]="formData.raumId"
+          >
+            @for (r of raumListe(); track r.id) {
+            <ion-select-option [value]="r.id"
+              >{{ r.bezeichnung }} ({{ r.art }}, {{ r.kapazitaet }}
+              Plätze)</ion-select-option
+            >
+            } @empty {
+            <ion-select-option disabled
+              >Keine Räume verfügbar</ion-select-option
+            >
+            }
+          </ion-select>
+        </ion-item>
+      </div>
+      }
+
+      <!--Lerngruppe + Fach + Zeitslot, nur bei ZUSATZSTUNDE-->
+      @if (formData.typ === ereignisTyp.ZUSATZSTUNDE) {
+      <div class="form">
+        <label>Fach</label>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="Fach auswählen"
+            [(ngModel)]="formData.fachId"
+            (ionChange)="verfuegbareRaeumeLaden()"
+          >
+            @for (f of faecher(); track f.id) {
+            <ion-select-option [value]="f.id"
+              >{{ f.name }} ({{ f.kuerzel }})
+            </ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="form">
+        <label>Zeitslot</label>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="Zeitslot auswählen"
+            [(ngModel)]="formData.startzeitId"
+            (ionChange)="verfuegbareRaeumeLaden()"
+          >
+            @for (z of zeitslots(); track z.id) {
+            <ion-select-option [value]="z.id"
+              >{{ z.stundennummer }}. Stunde ({{ z.start }} - {{ z.ende }})
+            </ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="form">
+        <label>Lerngruppe</label>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="Lerngruppe auswählen"
+            [(ngModel)]="formData.lerngruppeId"
+          >
+            @for (lg of lerngruppenListe(); track lg.id) {
+            <ion-select-option [value]="lg.id"
+              >{{ lg.bezeichnung }} (Jahrgang {{ lg.jahrgangsnummer }})
+            </ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="form">
+        <label>Verfügbarer Raum</label>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="Raum auswählen"
+            [(ngModel)]="formData.raumId"
+          >
+            @for (raum of verfuegbareRaeume(); track raum.id) {
+            <ion-select-option [value]="raum.id">
+              {{ raum.bezeichnung }} @if (raum.art) { ({{ raum.art }}) }
+            </ion-select-option>
+            } @empty {
+            <ion-select-option disabled>
+              Keine Räume verfügbar
+            </ion-select-option>
+            }
+          </ion-select>
+        </ion-item>
+      </div>
+
+      } @if (formData.typ) {
+      <div class="datum">
+        <label>Startdatum</label>
+        <ion-datetime
+          presentation="date"
+          [isDateEnabled]="isWeekday"
+          [(ngModel)]="formData.startdatum"
+        ></ion-datetime
+        ><br />
+      </div>
+      }
+
+      <!--Funktionen, die bei jeweils Ausfall und Raum da sind-->
+      @if (formData.typ === ereignisTyp.AUSFALL || formData.typ ===
+      ereignisTyp.RAUMAENDERUNG) {
+      <div class="datum">
+        <label>Enddatum</label>
+        <ion-datetime
+          presentation="date"
+          [isDateEnabled]="isWeekday"
+          [(ngModel)]="formData.enddatum"
+        ></ion-datetime
+        ><br />
+      </div>
+      }
+
+      <!--Ganztägig – nur bei AUSFALL/RAUMAENDERUNG relevant-->
+      @if (formData.typ === ereignisTyp.AUSFALL || formData.typ ===
+      ereignisTyp.RAUMAENDERUNG) {
+      <ion-item>
+        <ion-label>Ganztägig</ion-label>
+        <ion-toggle [(ngModel)]="formData.ganztag" slot="end"></ion-toggle>
+      </ion-item>
+
+      @if (!formData.ganztag) {
+      <div class="form">
+        <label>Start-Zeitslot</label>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="Start-Zeitslot auswählen"
+            [(ngModel)]="formData.startzeitId"
+          >
+            @for (z of zeitslots(); track z.id) {
+            <ion-select-option [value]="z.id"
+              >{{ z.stundennummer }}. Stunde ({{ z.start }} – {{ z.ende
+              }})</ion-select-option
+            >
+            }
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="form">
+        <label>End-Zeitslot</label>
+        <ion-item>
+          <ion-select
+            interface="popover"
+            placeholder="End-Zeitslot auswählen"
+            [(ngModel)]="formData.endzeitId"
+          >
+            @for (z of zeitslots(); track z.id) {
+            <ion-select-option [value]="z.id"
+              >{{ z.stundennummer }}. Stunde ({{ z.start }} – {{ z.ende
+              }})</ion-select-option
+            >
+            }
+          </ion-select>
+        </ion-item>
+      </div>
+      } }
+      <button class="button" (click)="ereignisSpeichern()">
+        Ereignis speichern
+      </button>
+    </div>
+  </div>
+
+  <!--Aktuelle Änderungen-->
+  <div class="änderungen-main">
+    <h3>Aktuelle Ereignisse</h3>
+    <div class="änderungen-content">
+      @for (a of aenderungen(); track a.id) {
+      <ion-item class="ereignis-art" [ngClass]="getEreignisArt(a.typ)">
+        <label>
+          <strong>{{ a.titel }}</strong>
+          <p>{{ a.beschreibung }}</p>
+
+          @if (a.offen) {
+          <span class="offen-badge">offen</span>
+
+          <a
+            [routerLink]="[
+    '/planungsansicht/vertretungsplan',
+    a.klassenstufeId,
+    a.klasseId
+  ]"
+            [queryParams]="{ aenderungId: a.id }"
+          >
+            bearbeiten
+            <ion-icon name="arrow-forward-outline"></ion-icon>
+          </a>
+          }
+        </label>
+      </ion-item>
+      } @empty {
+      <p>Keine aktuellen Änderungen.</p>
+      }
+    </div>
+  </div>
+</ion-content>

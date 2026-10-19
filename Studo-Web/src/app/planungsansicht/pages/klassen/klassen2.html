@@ -1,0 +1,98 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/planungsansicht/klassen"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ titel }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="b_right">
+    <h1>Klassen der Stufe</h1>
+
+    <!-- Button zum Anlegen einer neuen Klasse -->
+    <ion-button class="b1_rcolor" (click)="openAddModal()">
+      <ion-icon slot="start" name="add"></ion-icon>
+      Klasse anlegen
+    </ion-button>
+  </div>
+
+  <!-- Die Logik und der Inhalt dieses Paragraphes steht in der ts und css Datei-->
+  <p class="klassen2_p">{{ untertitel }}</p>
+
+  <!-- Die Card wird jeweils in dem Format erstellt und für nur so viele Klassen, wie auch Klassen hinzugefügt werden -->
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col size="3" *ngFor="let klasse of klassen">
+        <ion-card
+          class="card-height klassen-card"
+          button
+          (click)="goToKlasse(klasse)"
+        >
+          <ion-card-header>
+            <div class="klasse-card-header-row">
+              <ion-card-title><b>{{ klasse.bezeichnung }}</b></ion-card-title>
+              <ion-button
+                class="b1_rcolor klasse-bearbeiten-btn"
+                shape="round"
+                size="small"
+                (click)="deaktiviereKlasse(klasse, $event)"
+              >
+                <ion-icon slot="icon-only" name="ellipsis-vertical"></ion-icon>
+              </ion-button>
+            </div>
+          </ion-card-header>
+          <ion-card-content>
+            Klassenlehrer: {{ klasse.lehrkraftVorname }} {{
+            klasse.lehrkraftNachname }}<br />
+            Klassenraum: {{ klasse.klassenzimmer }}<br />
+            Schüleranzahl: {{ klasse.schueleranzahl }} Schüler<br />
+            <a
+              class="stundenplan-link"
+              (click)="openStundenplan(klasse, $event)"
+            >
+              Aktuellen Stundenplan ansehen
+            </a>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <!-- Modal: hier werden die Parallelklassen der Stufe angelegt  -->
+  <ion-modal [isOpen]="isAddModalOpen" (didDismiss)="closeAddModal()">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-title>Klasse anlegen</ion-title>
+          <ion-buttons slot="end">
+            <ion-button (click)="closeAddModal()">Schließen</ion-button>
+          </ion-buttons>
+        </ion-toolbar>
+      </ion-header>
+      <ion-content class="ion-padding">
+        <div class="modal-form">
+          <ion-item>
+            <ion-label position="stacked">Buchstabe</ion-label>
+            <ion-input
+              [(ngModel)]="newKlasse.bezeichnung"
+              placeholder="z. B. a"
+            ></ion-input>
+          </ion-item>
+        </div>
+        <ion-button expand="block" class="b1_rcolor" (click)="addKlasse()"
+          >Hinzufügen</ion-button
+        >
+      </ion-content>
+    </ng-template>
+  </ion-modal>
+  <!-- Bestätigungsdialog: Klasse deaktivieren -->
+  <ion-alert
+    [isOpen]="klasseZumDeaktivieren !== null"
+    header="Klasse deaktivieren"
+    [message]="deaktivierenNachricht"
+    [buttons]="deaktivierenButtons"
+    (didDismiss)="schliesseDeaktivierenDialog()"
+  ></ion-alert>
+</ion-content>

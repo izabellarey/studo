@@ -1,0 +1,59 @@
+# Startet das Backend. Die H2-Datenbank laeuft eingebettet mit,
+# ein eigener Datenbankcontainer ist nicht mehr noetig.
+#   docker compose up --build
+#
+# TODO [Backend-Team]: Variablennamen mit application.properties abgleichen.
+# TODO [nach CI/CD-Tutorium 10.9.]: Port und EXTERNE_BASIS_URL an das
+#   Testsystem der AG anpassen.
+# TODO [Frontend-Team]: Falls React als eigener Container laufen soll,
+#   hier einen zweiten Service ergaenzen.
+
+services:
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    environment:
+      CORS_ALLOWED_ORIGINS: http://134.245.1.240:1001
+      APP_EXTERNE_BASIS_URL: http://134.245.1.240:1000
+      APP_STANDARD_API_URL: http://134.245.1.240:1000/api
+      JWT_SECRET: ${JWT_SECRET:-F3Dz2paLHGAGoij/Bc8R9L7zTr6BpBbKgqduQaS4ig6Q5RLwmIqAL2gxe3YNe0yK}
+      # setzen eines JWT Secrets via .env Datei möglich, Fallback ist aber openssl generiert und damit sicher/gültig
+      #APP_EXTERNE_BASIS_URL: ${EXTERNE_BASIS_URL:-http://localhost:8080}
+      #APP_STANDARD_API_URL: ${APP_STANDARD_API_URL:-http://localhost:8080/api}
+      #CORS_ALLOWED_ORIGINS: ${CORS_ALLOWED_ORIGINS:-http://localhost:8081}
+    ports:
+      # Externe Erreichbarkeit läuft über
+      # Port 1600, das wird bereits VOR unserer VM auf 8080 umgeleitet.
+      # Docker-seitig bleibt es beim Standard-Mapping 8080:8080, NICHT WEB_PORT setzen!
+      - "${WEB_PORT:-8080}:8080"
+    volumes:
+      # H2 legt die Datenbankdatei unter /app/data ab - damit sie einen
+      # Neustart des Containers ueberlebt, liegt sie in einem Volume.
+      - h2-daten:/app/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "wget -q --spider http://localhost:8080/actuator/health || exit 1",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 10
+      start_period: 40s
+
+  frontend:
+    build:
+      context: ./Studo-Web
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    ports:
+    # Auf der VM: externe Erreichbarkeit läuft
+    # über Port 1601, das wird VOR unserer VM auf 8081 umgeleitet.
+    # Docker-seitig bleibt es beim Mapping 8081:80.
+    - "${FRONTEND_PORT:-8081}:80"
+    # - "${FRONTEND_PORT:-8100}:80"
+
+volumes:
+  h2-daten:

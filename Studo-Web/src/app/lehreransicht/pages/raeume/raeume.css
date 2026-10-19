@@ -1,0 +1,153 @@
+h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: 700;
+  color: var(--ion-text-color);
+}
+ 
+p {
+    color: #676d71
+}
+ 
+.buttons {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+ 
+.buttons ion-button {
+  --padding-start: 8px;
+  --padding-end: 8px;
+  margin: 0;
+}
+ 
+.raeume-tabelle {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+ 
+.raeume-tabelle th {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  background: #52796F;
+  color: #ffffff
+}
+ 
+.raeume-tabelle td {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  z-index: 1000;
+  align-items: center;
+  justify-content: center;
+}
+ 
+.popup.active {
+  display: flex;
+}
+ 
+.popup-content {
+  background: white;
+  color: black;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 500px;
+  width: 90%;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+ 
+/* breiteres Popup für den Wochenplan */
+.popup-content.breit {
+  max-width: 950px;
+}
+ 
+@media (prefers-color-scheme: dark) {
+  .popup-content {
+    background: #1e1e1e;
+    color: white;
+  }
+}
+ 
+.popup-content .close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  background: none;
+  border: none;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+ 
+.plan-tabelle {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+  table-layout: fixed;
+}
+ 
+.plan-tabelle th {
+  padding: 8px 12px;
+  text-align: left;
+  background: #52796F;
+  color: #ffffff
+}
+ 
+.plan-tabelle th:first-child {
+  width: 100px;
+}
+ 
+.plan-tabelle td {
+  padding: 4px;
+  vertical-align: top;
+  border-bottom: 1px solid #e3e6e4;
+  height: 60px;
+}
+ 
+.zeit {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 12px !important;
+  font-size: 13px;
+  color: #676d71;
+}
+ 
+.zeit strong {
+  font-size: 16px;
+}
+ 
+.stunde {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  height: 100%;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #cad2c5;
+  border-left: 4px solid #52796F;
+  color: #2f3e46;
+  font-size: 13px;
+}
+ 
+.stunde.geaendert {
+  background: #fdf1d6;
+  border-left-color: #e9a23b;
+}
+ 
+.leer {
+  padding: 20px 12px !important;
+  color: #676d71;
+}

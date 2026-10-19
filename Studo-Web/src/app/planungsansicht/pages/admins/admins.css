@@ -1,0 +1,212 @@
+/*Kopfzeile*/
+h1 {
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+p {
+    color: gray;
+}
+
+/*Admin Anlegen Knopf*/
+.anlegen {
+  background-color: #354F52;
+  color: #ffffff;
+  width: 200px;
+  border-radius: 10px;
+  align-items: center;
+  height: 50px;
+  font-size: 17px;
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  right: 15px;
+  top: 5px;
+  gap: 10px;
+  padding-left: 5px;
+
+}
+
+.anlegen:hover {
+  background-color: #52796F;
+}
+
+/*Popup*/
+.popup {
+  display: none;
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup.active { 
+  display: flex;
+}
+
+.popup-content {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  width: 90%;
+  max-width: 500px;
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+}
+
+/*Button zum Schließen des Popups*/
+.close {
+  background-color: #ffffff;
+  color: #354F52;
+  height: 30px;
+  width: 30px;
+  font-size: 17px;
+  top: 15px;
+  right: 15px;
+  z-index: 10;
+  position: absolute;
+}
+
+/*Allgemeine Designs (Labels und Input Felder)*/
+label {
+  text-transform: uppercase;
+  color: grey;
+  font-weight: bold;
+  font-size: small;
+  display: block;
+  margin-bottom: 10px;
+}
+
+ion-input {
+  width: 98%;
+  border-color: gray;
+  --highlight-color-focused: #354F52;
+  margin-bottom: 10px;
+}
+
+/*Knopf zum Speichern der Daten*/
+.speichern {
+  background-color: #354F52;
+  color: #ffffff;
+  width: 100%;
+  border-radius: 10px;
+  align-items: center;
+  height: 50px;
+  font-size: 17px;
+  margin-top: 20px;
+  justify-content: center;
+  padding-left: 5px;
+
+}
+
+.speichern:hover {
+  background-color: #52796F;
+}
+
+/*Filterliste*/
+.filter-aktion-leiste {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.filter-chips {
+  display: flex;
+  gap: 8px;
+}
+
+.filter-chip {
+  border-radius: 20px;
+  background:#cad2c5;
+  text-transform: none;
+  height: 40px;
+  width: fit-content;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-size: medium;
+  color: #ffffff;
+  font-weight: 800;
+  box-shadow: 2px 2px 5px gray ;
+}
+
+.filter-chip.aktiv {
+  --background: #52796F;
+  --background-hover: #2f3e46;
+  --background-activated: #52796F;
+  --color: #ffffff;
+}
+
+/*Tabelle, in der die Daten der Admin angezeigt werden*/
+.admin-tabelle {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 16px;
+}
+.admin-tabelle th {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+  background: #52796F;
+  color: #ffffff
+}
+
+.admin-tabelle td {
+  padding: 8px 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+/*Buttons zur Bearbeitung und Löschung einer einzelnen Lehrkraft*/
+.buttons {
+  display: flex;
+  gap: 10px;
+  align-items: flex-end;
+}
+
+.bearbeiten {
+  background-color: #354F52;
+  color: #ffffff;
+  width: 50px;
+  border-radius: 10px;
+  align-items: center;
+  height: 50px;
+  font-size: 17px;
+}
+
+.bearbeiten:hover {
+  background-color: #3f535d;
+}
+
+.bearbeiten.active {
+  background-color: #52796F;
+  color: #ffffff;
+}
+
+.deaktivieren {
+  background-color: #354F52;
+  color: #ffffff;
+  width: 50px;
+  border-radius: 10px;
+  align-items: center;
+  height: 50px;
+  font-size: 17px;
+}
+
+.deaktivieren:hover {
+  background-color: #3f535d;
+}
+
+.deaktivieren.active {
+  background-color: #52796F;
+  color: #ffffff;
+}
