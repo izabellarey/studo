@@ -1,12 +1,3 @@
-# Startet das Backend. Die H2-Datenbank laeuft eingebettet mit,
-# ein eigener Datenbankcontainer ist nicht mehr noetig.
-#   docker compose up --build
-#
-# TODO [Backend-Team]: Variablennamen mit application.properties abgleichen.
-# TODO [nach CI/CD-Tutorium 10.9.]: Port und EXTERNE_BASIS_URL an das
-#   Testsystem der AG anpassen.
-# TODO [Frontend-Team]: Falls React als eigener Container laufen soll,
-#   hier einen zweiten Service ergaenzen.
 
 services:
   backend:
