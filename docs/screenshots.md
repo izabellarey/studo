@@ -75,11 +75,11 @@ Planners work in the web client. It provides the dashboard, the management pages
 ## Android app
 
 <p>
-  <img src="assets/screenshots/app-timetable-week.png" alt="Weekly timetable in the Android app" width="24%" />
-  <img src="assets/screenshots/app-timetable-day.png" alt="Daily timetable in the Android app" width="24%" />
-  <img src="assets/screenshots/app-changes.png" alt="Change list in the Android app" width="24%" />
-  <img src="assets/screenshots/app-rooms.png" alt="Room schedules in the Android app (teachers)" width="24%" />
-  <img src="assets/screenshots/app-rooms-timetable.png" alt="Room timetables in the Android app (teachers)" width="24%" />
+  <img src="assets/screenshots/app-timetable-week.png" alt="Weekly timetable in the Android app" width="19%" />
+  <img src="assets/screenshots/app-timetable-day.png" alt="Daily timetable in the Android app" width="19%" />
+  <img src="assets/screenshots/app-changes.png" alt="Change list in the Android app" width="19%" />
+  <img src="assets/screenshots/app-rooms.png" alt="Room schedules in the Android app (teachers)" width="19%" />
+  <img src="assets/screenshots/app-rooms-timetable.png" alt="Room timetables in the Android app (teachers)" width="19%" />
 
 </p>
 
