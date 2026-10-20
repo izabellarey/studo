@@ -44,6 +44,8 @@ Planners work in the web client. It provides the dashboard, the management pages
 
 <p>
   <img src="assets/screenshots/web-master-data.png" alt="Master data configuration" width="100%" />
+  <img src="assets/screenshots/web-master-data2.png" alt="Master data configuration second screenshot" width="100%" />
+
 </p>
 
 *School profile, period grid, break rules, maximum workloads, grade-level priorities, mandatory subjects and lesson quotas.*
