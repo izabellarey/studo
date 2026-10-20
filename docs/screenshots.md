@@ -77,6 +77,8 @@ Planners work in the web client. It provides the dashboard, the management pages
   <img src="assets/screenshots/app-timetable-day.png" alt="Daily timetable in the Android app" width="24%" />
   <img src="assets/screenshots/app-changes.png" alt="Change list in the Android app" width="24%" />
   <img src="assets/screenshots/app-rooms.png" alt="Room schedules in the Android app (teachers)" width="24%" />
+  <img src="assets/screenshots/app-rooms-timetable.png" alt="Room timetables in the Android app (teachers)" width="24%" />
+
 </p>
 
 *From left to right: weekly timetable with colour-highlighted changes, daily view (tap a weekday), the change list with an unread counter, and room schedules, which only teachers can see.*
